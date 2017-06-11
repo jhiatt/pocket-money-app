@@ -20,9 +20,9 @@ ActiveRecord::Schema.define(version: 20170611202941) do
     t.decimal "frequency", precision: 4, scale: 2
     t.decimal "amount", precision: 8, scale: 2
     t.string "impact"
+    t.string "category"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "category"
   end
 
   create_table "expenses", force: :cascade do |t|

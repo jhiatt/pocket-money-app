@@ -1,0 +1,15 @@
+<%= form_tag url, method: form_method do %>
+  <div>Date:<input type="text" value="<%= @event.date %>" name="date"></div>
+  <div>Is this money you will receive or money you owe?<input type="text" value="<%= @event.impact %>" name="impact"></div>
+  <div>How often will this repeat?
+  <select name="frequency" id="frequency"></div>
+    <option value=1>Monthly</option>
+    <option value="Every two weeks">Every Two Weeks</option>
+    <option value="Weekly">Weekly</option>
+    <option value=2>Twice a Month</option>
+    <option value=0.5 >Every two months</option>
+  </select>
+  <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
+  <div>Provide a category if you want:<input type="text" value="<%= @event.category %>" name="category"></div>
+  <div><input type="submit" value="<%= action %>"></div>
+<% end %>
