@@ -1,6 +1,6 @@
 class Event < ApplicationRecord
-  validates :date, :frequency, :amount, :impact, presence: true
-  validates :amount, numericality: {only_integer: true}
+  validates :date, :frequency, :amount, :impact, :user_id, presence: true
+  validates :amount, numericality: {only_decimal: true}
 
   belongs_to :tag, optional: true
   belongs_to :user
