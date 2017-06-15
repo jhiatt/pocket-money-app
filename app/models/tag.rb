@@ -1,2 +1,5 @@
 class Tag < ApplicationRecord
+  has_many :events
+  has_many :expenses
+  belongs_to :user
 end

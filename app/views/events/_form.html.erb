@@ -1,6 +1,10 @@
 <%= form_tag url, method: form_method do %>
-  <div>Date:<input type="text" value="<%= @event.date %>" name="date"></div>
-  <div>Is this money you will receive or money you owe?<input type="text" value="<%= @event.impact %>" name="impact"></div>
+  <div>Date: (Pleaase format Year, Month, Day)<input type="text" value="<%= @event.date %>" name="date" class="datepicker"></div>
+  <div>Is this money you will receive or money you owe?
+   <select name="impact" id="impact"></div>
+    <option value="out">Will Pay</option>
+    <option value="in">Will Receive</option>
+  </select>
   <div>How often will this repeat?
   <select name="frequency" id="frequency"></div>
     <option value=1>Monthly</option>
@@ -10,6 +14,24 @@
     <option value=0.5 >Every two months</option>
   </select>
   <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
-  <div>Provide a category if you want:<input type="text" value="<%= @event.category %>" name="category"></div>
+  <div>Provide a category if you want:
+   <select name="category" id="category"></div>
+   <% @categories.each do |category| %>
+    <option value="<%= category %>"><%= category %></option>
+    <% end %>
+  </select>
+  </div>
+  <div>Tag this expense as:
+   <% if @tags%>
+      <select name="tag" id="tag"></div>
+        <% @tags.each do |tag| %>
+          <option value="<%= tag %>"><%= tag %></option>
+        <% end %>
+      </select>
+    <% else %>
+    No Tags   
+    <% end %>
+<a href="/tags/new">New Tag</a>
+  </div>
   <div><input type="submit" value="<%= action %>"></div>
 <% end %>
