@@ -1,6 +1,16 @@
+<h1><%= heading %></h1>
 <%= form_tag url, method: form_method do %>
   <div>Date:<input type="hidden" value="<%= @expense.date %>" name="date"></div>
   <div>How much?<input type="text" value="<%= @expense.amount %>" name="amount"></div>
-  <div>Provide a category if you want:<input type="text" value="<%= @expense.category %>" name="category"></div>
-  <div><input type="submit" value="<%= action %>"></div>
+  <div>Tag this expense as:
+   <% if @tags%>
+      <select name="tag" id="tag"></div>
+        <% @tags.each do |tag| %>
+          <option value="<%= tag.id %>"><%= tag.description %></option>
+        <% end %>
+      </select>
+    <% else %>
+    No Tags   
+    <% end %>  
+  W<div><input type="submit" value="<%= action %>"></div>
 <% end %>

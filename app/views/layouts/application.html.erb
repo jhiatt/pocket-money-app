@@ -9,6 +9,7 @@
   </head>
 
   <body>
+  <%= link_to "sign out", "/users/sign_out", method: :delete %>
       <% flash.each do |name, message| %>
       <div class="alert alert-<%= name %> alert-dismissible" role="alert"><%= message %>
       <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>

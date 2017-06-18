@@ -1,0 +1,9 @@
+
+<% @expenses.each do |expense| %>
+<div>
+  <div>Date: <%= expense.date.strftime("%m/%d/%Y") %> </div>
+  <div>Amount: <%= expense.amount %> </div>
+  <div>Tag: <%= expense.tag.description %></div>
+</div>
+<br>
+<% end %>

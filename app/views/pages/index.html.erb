@@ -1,1 +1,31 @@
 HOME PAGE
+
+<br>
+<!-- Amount available -->
+<%= @pocket_money %>
+
+
+<!-- Add an expense -->
+<%= form_tag "/expenses", method: :post do %>
+  <input type="hidden" value="<%= @expense.date %>" name="date">
+  <div>Amount<input type="text" value="<%= @expense.amount %>" name="amount"></div>
+  <div>Tag (optional):
+  <% if @tags%>
+      <select name="tag" id="tag"></div>
+        <% @tags.each do |tag| %>
+          <option value="<%= tag.id %>"><%= tag.description %></option>
+        <% end %>
+      </select>
+    <% else %>
+    No Tags   
+    <% end %>
+  <div>Coming in or going out?<select name="pos_or_neg" id="pos_or_neg" value="Out"></div>
+    <option value="In">In</option>
+    <option value="Out">Out</option>
+  </select>
+  <div><input type="submit" value="Submit"></div>
+<% end %>
+
+
+<!-- update current users balance CAN I ADD A ROUTE TO THE USER CONTROLLER?-->
+ <%=# form_tag "" %>

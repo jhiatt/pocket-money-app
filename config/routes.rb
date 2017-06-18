@@ -1,5 +1,10 @@
 Rails.application.routes.draw do
   devise_for :users
+  Rails.application.routes.draw do
+      devise_for :users, controllers: {
+        sessions: 'users/sessions'
+      }
+    end
   # For details on the DSL available within this file, see http://guides.rubyonrails.org/routing.html
 
   root to: "pages#index"
@@ -11,6 +16,8 @@ Rails.application.routes.draw do
   get "events/:id", to: 'events#show'
   get "events/:id/edit", to: 'events#edit'
   patch "events/:id", to: 'events#update'
+  delete "events/:id", to: 'events#destroy'
+
 
   #One-time expenses
   get "expenses", to: 'expenses#index'
@@ -19,6 +26,7 @@ Rails.application.routes.draw do
   get "expenses/:id", to: 'expenses#show'
   get "expenses/:id/edit", to: 'expenses#edit'
   patch "expenses/:id", to: 'expenses#update'
+  delete "expenses/:id", to: 'expenses#destroy'
 
   #Tags
   get "tags", to: 'tags#index'
@@ -27,5 +35,6 @@ Rails.application.routes.draw do
   get "tags/:id/edit", to:'tags#create'
   patch "tags", to: 'tags#update'
   delete "tags/:id", to: 'tags#destroy'
+
 
 end
