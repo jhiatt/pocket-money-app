@@ -9,6 +9,11 @@
   </head>
 
   <body>
+    <div> 
+      <% if current_user %>
+        <%= current_user.pocket_money %>
+      <% end %> 
+    </div>
   <%= link_to "sign out", "/users/sign_out", method: :delete %>
       <% flash.each do |name, message| %>
       <div class="alert alert-<%= name %> alert-dismissible" role="alert"><%= message %>

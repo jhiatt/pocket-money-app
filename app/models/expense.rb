@@ -1,5 +1,5 @@
 class Expense < ApplicationRecord
-  validates :date, :amount, :user_id, presence: true
+  validates :date, :amount, presence: true
 
 
   belongs_to :tag, optional: true
