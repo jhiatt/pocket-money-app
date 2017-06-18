@@ -5,7 +5,8 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-
+#calendar for events index
+gem "simple_calendar", "~> 2.0"
 #faker
 gem 'faker'
 #devise for secureity and User model creation

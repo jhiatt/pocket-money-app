@@ -1,5 +1,5 @@
 class PagesController < ApplicationController
-
+  before_action :authenticate_user!
   def index
     @expense = Expense.new(date: Time.now)
     if current_user && current_user.tags.any?

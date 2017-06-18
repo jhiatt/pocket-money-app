@@ -26,6 +26,13 @@
 #   Expense.create!(date: Faker::Date.between("2017-07-01", "2017-07-31"), amount: rand(100).to_i, tag_id: Tag.all.sample.id, user_id: User.all.sample.id)
 # end
 
-User.all.each do |user|
-  user.update(pocket_money: 0, pocket_time: 30, last_balance: 100)
+Expense.all.each do |expense|
+  expense.update(amount: -expense.amount)
 end
+
+Event.all.each do |event|
+  if event.impact == "out"
+    event.update(amount: -event.amount)
+  end
+end
+

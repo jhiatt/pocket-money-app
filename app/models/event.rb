@@ -21,4 +21,9 @@ class Event < ApplicationRecord
     end
   end
 
+#work around to match Calendar Gem
+    def start_time
+        self.date 
+    end
+
 end

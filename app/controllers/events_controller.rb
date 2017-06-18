@@ -1,5 +1,5 @@
 class EventsController < ApplicationController
-
+  before_action :authenticate_user!
   def index
     @events = Event.all
   end
@@ -15,7 +15,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(date: params[:date], impact: params[:impact], frequency: params[:frequency], amount: params[:amount], category: params[:category])
+    @event = Event.new(date: params[:date], impact: params[:impact], frequency: params[:frequency], amount: params[:amount], category: params[:category], description: params[:description], user_id: current_user.id)
     @event.save 
     redirect_to "/events/#{@event.id}"
   end
@@ -28,11 +28,11 @@ class EventsController < ApplicationController
   def edit
     @tags = Tag.where(user_id: current_user.id)
     @categories = ["Housing", "Utilities", "Savings", "Healthcare", "Debt", "Subscriptions", "Other"]
-    @event = Event.find_by(params[:id])
+    @event = Event.find_by(id: params[:id])
   end
 
   def update
-    Event.update(date: params[:date], impact: params[:impact], frequency: params[:frequency], amount: params[:amount], category: params[:category])
+    Event.update(date: params[:date], impact: params[:impact], frequency: params[:frequency], amount: params[:amount], category: params[:category], description: params[:description])
   end
 
   def destroy

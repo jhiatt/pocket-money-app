@@ -3,4 +3,6 @@
 <div>Repeat: <%= @event.frequency %></div>
 <div>Amount: <%= @event.amount %></div>
 <div>Category: <%= @event.category %></div>
-<div>Tag: <%=  %></div>
+<% if @event.tag_id %>
+  <div>Tag: <%=  %></div>
+<% end %>

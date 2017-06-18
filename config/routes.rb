@@ -20,7 +20,7 @@ Rails.application.routes.draw do
 
   #One-time expenses
   get "expenses", to: 'expenses#index'
-  get "expenses/new", to: 'expenses#new'
+  # get "expenses/new", to: 'expenses#new'
   post "expenses", to: 'expenses#create'
   get "expenses/:id", to: 'expenses#show'
   get "expenses/:id/edit", to: 'expenses#edit'

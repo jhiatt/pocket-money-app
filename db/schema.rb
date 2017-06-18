@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170618173019) do
+ActiveRecord::Schema.define(version: 20170618201200) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20170618173019) do
     t.string "category"
     t.integer "tag_id"
     t.integer "user_id"
+    t.string "description"
   end
 
   create_table "expenses", force: :cascade do |t|
@@ -58,7 +59,7 @@ ActiveRecord::Schema.define(version: 20170618173019) do
     t.datetime "updated_at", null: false
     t.decimal "last_balance", precision: 10, scale: 2
     t.decimal "pocket_money", precision: 10, scale: 2
-    t.integer "pocket_time", default: 31
+    t.integer "pocket_time"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

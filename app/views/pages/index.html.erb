@@ -10,8 +10,8 @@ Pocket Money: <%= current_user.pocket_money %>
   <input type="hidden" value="<%= @expense.date %>" name="date">
   <div>Amount<input type="text" value="<%= @expense.amount %>" name="amount"></div>
   <div>Tag (optional):
-  <% if @tags%>
-      <select name="tag" id="tag"></div>
+  <% if @tags.any? %>
+      <select name="tag_id" id="tag"></div>
         <% @tags.each do |tag| %>
           <option value="<%= tag.id %>"><%= tag.description %></option>
         <% end %>
