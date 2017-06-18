@@ -8,20 +8,24 @@
 
 
 
-3.times do
-  User.create!(email: Faker::Internet.email, password: "password")
-end
+# 3.times do
+#   User.create!(email: Faker::Internet.email, password: "password")
+# end
 
-5.times do
-  Tag.create!(description: Faker::HarryPotter.location, user_id: User.all.sample.id)
-end
+# 5.times do
+#   Tag.create!(description: Faker::HarryPotter.location, user_id: User.all.sample.id)
+# end
 
-20.times do
-  array = ['in', 'out']
-  categories = ["Housing", "Utilities", "Savings", "Healthcare", "Debt", "Subscriptions", "Other"]
-  Event.create!(date: "2017-07-#{rand(30)}", frequency: 1, impact: array.sample, amount: rand(1000).to_i, category: categories.sample, tag_id: Tag.all.sample.id, user_id: User.all.sample.id)
-end
+# 20.times do
+#   array = ['in', 'out']
+#   categories = ["Housing", "Utilities", "Savings", "Healthcare", "Debt", "Subscriptions", "Other"]
+#   Event.create!(date: "2017-07-#{rand(30)}", frequency: 1, impact: array.sample, amount: rand(1000).to_i, category: categories.sample, tag_id: Tag.all.sample.id, user_id: User.all.sample.id)
+# end
 
-15.times do
-  Expense.create!(date: Faker::Date.between("2017-07-01", "2017-07-31"), amount: rand(100).to_i, tag_id: Tag.all.sample.id, user_id: User.all.sample.id)
+# 15.times do
+#   Expense.create!(date: Faker::Date.between("2017-07-01", "2017-07-31"), amount: rand(100).to_i, tag_id: Tag.all.sample.id, user_id: User.all.sample.id)
+# end
+
+User.all.each do |user|
+  user.update(pocket_money: 0, pocket_time: 30, last_balance: 100)
 end

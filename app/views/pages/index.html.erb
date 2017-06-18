@@ -1,8 +1,8 @@
-HOME PAGE
+HOME PAGE <%= "email: #{current_user.email}, id: #{current_user.id}" %>
 
 <br>
 <!-- Amount available -->
-<%= current_user.pocket_money %>
+Pocket Money: <%= current_user.pocket_money %>
 
 
 <!-- Add an expense -->
