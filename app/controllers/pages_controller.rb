@@ -4,7 +4,7 @@ class PagesController < ApplicationController
     @expense = Expense.new(date: Time.now)
     if current_user && current_user.tags.any?
       @tags = Tag.where(user_id: current_user.id)
-      current_user.pocket_money_update
+      current_user.account.pocket_money_update
     elsif current_user
       @tags = []
     else

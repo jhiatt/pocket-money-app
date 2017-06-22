@@ -2,7 +2,7 @@ HOME PAGE <%= "email: #{current_user.email}, id: #{current_user.id}" %>
 
 <br>
 <!-- Amount available -->
-Pocket Money: <%= current_user.pocket_money %>
+Pocket Money: <%= current_user.account.pocket_money %>
 
 
 <!-- Add an expense -->
@@ -28,4 +28,7 @@ Pocket Money: <%= current_user.pocket_money %>
 
 
 <!-- update current users balance CAN I ADD A ROUTE TO THE USER CONTROLLER?-->
- <%= form_tag "" %>
+ <%= form_tag "/users", method: :patch do %>
+ <div>Update your current Bank Balance</div><input type="text" name="last_balance">
+ <input type="submit" value="Enter"></div>
+ <% end %>

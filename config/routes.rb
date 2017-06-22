@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  devise_for :users, controllers: { sessions: 'users/sessions' }
+  devise_for :users, controllers: { sessions: 'users/sessions', registrations: 'users/registrations' }
   # , controllers: {
   #       sessions: 'users/sessions'
   #     }
@@ -35,5 +35,7 @@ Rails.application.routes.draw do
   patch "tags", to: 'tags#update'
   delete "tags/:id", to: 'tags#destroy'
 
+  #Accounts
+  # get "accounts", to: ''
 
 end

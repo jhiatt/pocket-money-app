@@ -11,7 +11,7 @@
   <body>
     <div> 
       <% if current_user %>
-        <%= current_user.pocket_money %>
+        <%= current_user.account.pocket_money %>
       <% end %> 
     </div>
   <% if current_user %>
