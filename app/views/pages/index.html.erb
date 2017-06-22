@@ -28,7 +28,8 @@ Pocket Money: <%= current_user.account.pocket_money %>
 
 
 <!-- update current users balance CAN I ADD A ROUTE TO THE USER CONTROLLER?-->
- <%= form_tag "/users", method: :patch do %>
- <div>Update your current Bank Balance</div><input type="text" name="last_balance">
+ <%= form_tag "/accounts/#{current_user.account.id}", method: :patch do %>
+ <div>Update your current Bank Balance</div><input type="text" value="<%= current_user.account.last_balance %>" name="last_balance">
+ How many days out do you want to go?<input type="text" value="<%= current_user.account.pocket_time %>" name="pocket_time">
  <input type="submit" value="Enter"></div>
  <% end %>
