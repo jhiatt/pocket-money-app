@@ -36,8 +36,11 @@
 #   end
 # end
 
-User.all.each do |user|
-  user.create_account
+# User.all.each do |user|
+#   user.create_account
+# end
+
+Event.all do |event|
+  ed = EventDate.new(event_id: event.id, date:event.date)
+  ed.save
 end
-
-

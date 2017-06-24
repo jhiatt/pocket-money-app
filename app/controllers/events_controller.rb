@@ -2,7 +2,7 @@ class EventsController < ApplicationController
   before_action :authenticate_user!
   after_action :update_pocket only: [:creat, :update, :destroy]
   def index
-    @events = Event.all
+    @event_dates = EventDate.all
   end
 
   def new

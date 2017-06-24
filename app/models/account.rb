@@ -3,6 +3,7 @@ class Account < ApplicationRecord
 
 
   def pocket_money_update
+####### current user?  is this only for that user's events?
     u_pocket_money = last_balance
 
     pocket_money_expenses = Expense.where("date > ? AND date < ?", Time.now, (Time.now + pocket_time.days))

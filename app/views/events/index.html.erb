@@ -1,11 +1,11 @@
-<%= month_calendar events: @events do |date, events| %>
+<%= month_calendar events: @event_dates do |date, event_dates| %>
   <%= date %>
 
-  <% events.each do |event| %>
+  <% event_dates.each do |event_date| %>
     <div>
-      <%= event.description %>
-      <%= event.category %>
-      <%= event.amount %>
+      <%= event_date.event.description %>
+      <%= event_date.event.category %>
+      <%= event_date.event.amount %>
     </div>
   <% end %>
 <% end %>
