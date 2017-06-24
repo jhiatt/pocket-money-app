@@ -1,5 +1,7 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
+  after_action :update_pocket only: [:creat, :update, :destroy]
+
   def index
     @expenses = Expense.all
   end
