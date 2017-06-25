@@ -40,7 +40,7 @@
 #   user.create_account
 # end
 
-Event.all do |event|
+Event.all.each do |event|
   ed = EventDate.new(event_id: event.id, date:event.date)
   ed.save
 end

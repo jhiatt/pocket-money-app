@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170624053620) do
+ActiveRecord::Schema.define(version: 20170624213522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,15 +18,28 @@ ActiveRecord::Schema.define(version: 20170624053620) do
   create_table "accounts", force: :cascade do |t|
     t.decimal "last_balance", precision: 10, scale: 2
     t.decimal "pocket_money", precision: 10, scale: 2
-    t.integer "pocket_time"
+    t.integer "pocket_time" #number of days factored into pocket money calc
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.integer "user_id"
+    t.datetime "pocket_period" #last event
   end
 
   create_table "event_dates", force: :cascade do |t|
     t.integer "event_id"
     t.datetime "date"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "event_weeklies", force: :cascade do |t|
+    t.boolean "sunday"
+    t.boolean "monday"
+    t.boolean "tuesday"
+    t.boolean "wednesday"
+    t.boolean "thursday"
+    t.boolean "friday"
+    t.boolean "saturday"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
