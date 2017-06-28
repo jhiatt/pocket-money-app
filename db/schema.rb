@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170627030041) do
+ActiveRecord::Schema.define(version: 20170628234028) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(version: 20170627030041) do
 
   create_table "events", force: :cascade do |t|
     t.datetime "date"
-    t.decimal "frequency", precision: 4, scale: 2
     t.decimal "amount", precision: 8, scale: 2
     t.string "impact"
     t.datetime "created_at", null: false
@@ -56,6 +55,7 @@ ActiveRecord::Schema.define(version: 20170627030041) do
     t.integer "tag_id"
     t.integer "user_id"
     t.string "description"
+    t.boolean "repeat"
   end
 
   create_table "expenses", force: :cascade do |t|

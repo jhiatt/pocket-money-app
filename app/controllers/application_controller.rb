@@ -3,7 +3,7 @@ class ApplicationController < ActionController::Base
 
   def update_pocket
     if current_user
-      current_user.acccount.pocket_money_update
+      current_user.account.pocket_money_update
     end
   end
 end

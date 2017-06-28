@@ -1,6 +1,6 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
-  after_action :update_pocket only: [:creat, :update, :destroy]
+  after_action :update_pocket, only: [:create, :update, :destroy]
 
   def index
     @expenses = Expense.all
@@ -15,7 +15,7 @@ class ExpensesController < ApplicationController
     end
     @expense = Expense.new(date: Time.now, tag_id: params[:tag_id], amount: amount, user_id: current_user.id)
     if @expense.save
-      current_user.pocket_money_update
+      current_user.account.pocket_money_update
     end
     redirect_to "/expenses"
   end

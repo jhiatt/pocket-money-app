@@ -23,9 +23,10 @@ class Account < ApplicationRecord
     #we want to always keep enough dates ahead fo us for the pocket money calculation.  Pocket_period is the date of our latest 
     if pocket_period && (pocket_time.days.from_now > pocket_period)
         # roll_events
-    elsif pocket_period.nil?
         pocket_period = (Time.now + pocket_time)
+    elsif pocket_period.nil?
         # roll_events
+        pocket_period = (Time.now + pocket_time)
     end
   end
 
@@ -41,7 +42,7 @@ class Account < ApplicationRecord
   #       # How do we handle edited events, should we clear all future events before running this calc.  Will this mess up anything?
   #         #Maybe we should just destroy all future instances of that event_id when the event is edited
 
-  #   Event.where.not(frequency: "none").each do |event|
+  #   user.events.where.not(frequency: 0).each do |event|
   #   #only repeating events
   #     EventDate.where(event_id: event.id).each do |eventdate|
   #     #checks if the event is there already, if not it adds an instance
