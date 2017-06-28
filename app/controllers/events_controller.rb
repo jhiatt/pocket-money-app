@@ -33,7 +33,8 @@ class EventsController < ApplicationController
   end
 
   def update
-    Event.update(date: params[:date], impact: params[:impact], frequency: params[:frequency], amount: params[:amount], category: params[:category], description: params[:description])
+    event = Event.find_by(id: params[:id])
+    event.update(date: params[:date], impact: params[:impact], frequency: params[:frequency], amount: params[:amount], category: params[:category], description: params[:description])
   end
 
   def destroy

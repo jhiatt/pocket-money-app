@@ -27,7 +27,8 @@ class ExpensesController < ApplicationController
     @expense = Expense.find_by(id: params[:id])
   end
   def update
-    Expense.update(date: params[:date], amount: params[:amount], tag_id: params[:tag])
+    expense = Expense.find_by(id: params[:id])
+    expense.update(date: params[:date], amount: params[:amount], tag_id: params[:tag])
   end
   def destroy
     expense = Expense.find_by(id: params[:id])
