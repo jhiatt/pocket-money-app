@@ -16,7 +16,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(date: params[:date], impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description], user_id: current_user.id)
+    @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description], user_id: current_user.id)
     @event.save 
     redirect_to "/events/#{@event.id}"
   end
@@ -34,7 +34,7 @@ class EventsController < ApplicationController
 
   def update
     event = Event.find_by(id: params[:id])
-    event.update(date: params[:date], impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description])
+    event.update(impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description])
   end
 
   def destroy
