@@ -9,13 +9,9 @@
     <option value="in">Will Receive</option>
   </select>
   <div>How often will this repeat?
-  <select name="frequency" id="frequency"></div>
-    <option value=1>Monthly</option>
-    <option value="Every two weeks">Every Two Weeks</option>
-    <option value="Weekly">Weekly</option>
-    <option value=2>Twice a Month</option>
-    <option value=0.5 >Every two months</option>
-  </select>
+  <select name="repeat" id="repeat"></div>
+    <option value="True">Yes</option>
+    <option value="False">No</option>
   <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
   <div>Provide a category if you want:
    <select name="category" id="category"></div>

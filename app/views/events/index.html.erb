@@ -1,11 +1,11 @@
-<%= month_calendar events: @event_dates do |date, event_dates| %>
-  <%= date %>
 
-  <% event_dates.each do |event_date| %>
-    <div>
-      <%= event_date.event.description %>
-      <%= event_date.event.category %>
-      <%= event_date.event.amount %>
-    </div>
+
+<%= month_calendar(attribute: :starts_at) do |date| %>
+  <%= date %>
+  <% Event.find_monthly_events(date, current_user).each do |event| %>
+    <%= event.description %>
+  <% end %>
+  <% Event.find_weekly_events(date, current_user).each do |event| %>
+    <%= event.description %>
   <% end %>
 <% end %>
