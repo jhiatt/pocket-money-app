@@ -12,6 +12,8 @@ class Account < ApplicationRecord
     pocket_money_expenses.each do |expense|
       u_pocket_money += expense.amount
     end
+    Event.joins(:event_dates).where('event_dates.date' => date).where(user: user)
+
     pocket_money_event = Event.where("date > ? AND date < ?", Time.now, (Time.now + pocket_time.days))
     pocket_money_event.each do |event|
       u_pocket_money += event.amount

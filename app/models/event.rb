@@ -1,5 +1,5 @@
 class Event < ApplicationRecord
-  validates :date, :repeat, :amount, :impact, presence: true
+  validates :repeat, :amount, :impact, presence: true
   validates :amount, numericality: {only_decimal: true}
 
   belongs_to :tag, optional: true
@@ -23,6 +23,11 @@ class Event < ApplicationRecord
     week = date.to_datetime.strftime("%U").to_i
     day = date.to_datetime.strftime("%A")
     joins(:event_weeklies).where('event_weeklies.week_number' => week, 'event_weeklies.' + day.downcase => true).where(user: user).each
+  end
+
+  def self.partial_week_update(date)
+    
+
   end
 
 end

@@ -52,9 +52,9 @@
   categories = ["Housing", "Utilities", "Savings", "Healthcare", "Debt", "Subscriptions", "Other"]
   event = Event.create!(repeat: true, impact: array.sample, amount: rand(1000).to_i, category: categories.sample, tag_id: Tag.all.sample.id, user_id: User.first.id)
   if type.sample
-    EventDate.create!(date: "2017-07-#{rand(30)}", event: event.id)
+    EventDate.create!(date: "2017-07-#{rand(30)}", event_id: event.id)
   else
-    EventWeek.create!(week_number: week.sample, sunday: type.sample, monday: type.sample, tuesday: type.sample, wednesday: type.sample, thursday: type.sample, friday: type.sample, saturday: type.sample)
+    EventWeekly.create!(week_number: week.sample, sunday: type.sample, monday: type.sample, tuesday: type.sample, wednesday: type.sample, thursday: type.sample, friday: type.sample, saturday: type.sample, event_id: event.id)
   end
 end
 
