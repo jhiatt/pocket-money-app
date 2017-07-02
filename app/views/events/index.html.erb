@@ -2,10 +2,19 @@
 
 <%= month_calendar(attribute: :starts_at) do |date| %>
   <%= date %>
+
   <% Event.find_monthly_events(date, current_user).each do |event| %>
     <%= event.description %>
+    <br>
+    <%= event.amount %>
+    <a href="/events/<%= event.id %>">closer look</a>
+    <hr>
   <% end %>
   <% Event.find_weekly_events(date, current_user).each do |event| %>
     <%= event.description %>
+    <a href="/events/<%= event.id %>">closer look</a>
+    <br>
+    <%= event.amount %>
+    <hr>
   <% end %>
 <% end %>

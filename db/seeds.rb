@@ -45,20 +45,23 @@
 #   ed.save
 # end
 
-10.times do
-  type = [true, false]
-  week = [29, 30]
-  array = ['in', 'out']
-  categories = ["Housing", "Utilities", "Savings", "Healthcare", "Debt", "Subscriptions", "Other"]
-  event = Event.create!(repeat: true, impact: array.sample, amount: rand(1000).to_i, category: categories.sample, tag_id: Tag.all.sample.id, user_id: User.first.id)
-  if type.sample
-    EventDate.create!(date: "2017-07-#{rand(30)}", event_id: event.id)
-  else
-    EventWeekly.create!(week_number: week.sample, sunday: type.sample, monday: type.sample, tuesday: type.sample, wednesday: type.sample, thursday: type.sample, friday: type.sample, saturday: type.sample, event_id: event.id)
-  end
-end
+# 10.times do
+#   type = [true, false]
+#   week = [29, 30]
+#   array = ['in', 'out']
+#   categories = ["Housing", "Utilities", "Savings", "Healthcare", "Debt", "Subscriptions", "Other"]
+#   event = Event.create!(repeat: true, impact: array.sample, amount: rand(1000).to_i, category: categories.sample, tag_id: Tag.all.sample.id, user_id: User.first.id)
+#   if type.sample
+#     EventDate.create!(date: "2017-07-#{rand(30)}", event_id: event.id)
+#   else
+#     EventWeekly.create!(week_number: week.sample, sunday: type.sample, monday: type.sample, tuesday: type.sample, wednesday: type.sample, thursday: type.sample, friday: type.sample, saturday: type.sample, event_id: event.id)
+#   end
+# end
 
-25.times do
-  Expense.create!(date: Faker::Date.between("2017-07-01", "2017-07-31"), amount: rand(100).to_i, tag_id: Tag.all.sample.id, user_id: User.first.id)
-end
+# 25.times do
+#   Expense.create!(date: Faker::Date.between("2017-07-01", "2017-07-31"), amount: rand(100).to_i, tag_id: Tag.all.sample.id, user_id: User.first.id)
+# end
 
+Event.where(user_id: 1).each do |event|
+  event.update(description: Faker::HarryPotter.quote)
+end

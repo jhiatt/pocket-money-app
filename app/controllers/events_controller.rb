@@ -56,9 +56,6 @@ class EventsController < ApplicationController
     elsif @event.repeat && params[:frequency] = "weekly"
       #week number to start
       week_num = params[:start_date].to_datetime.strftime("%U").to_i
-      #day of the week to start in the first week
-      day = date.wday
-      
 
       #the first event may start on a partial week so we will add that before the loop
       first_week = EventWeekly.new(event_id: @event.id,
@@ -70,34 +67,7 @@ class EventsController < ApplicationController
                            thursday: params[:thursday],
                            friday: params[:friday],
                            saturday: params[:saturday])
-      if day = 1
-        first_week[sunday] = false
-      elsif day = 2
-        first_week[sunday] = false
-        first_week[monday] = false
-      elsif day = 3
-        first_week[sunday] = false
-        first_week[monday] = false
-        first_week[tuesday] = false
-      elsif day = 4
-        first_week[sunday] = false
-        first_week[monday] = false
-        first_week[tuesday] = false
-        first_week[wednesday] = false
-      elsif day = 5
-        first_week[sunday] = false
-        first_week[monday] = false
-        first_week[tuesday] = false
-        first_week[wednesday] = false
-        first_week[thursday] = false
-      elsif day = 6
-        first_week[sunday] = false
-        first_week[monday] = false
-        first_week[tuesday] = false
-        first_week[wednesday] = false
-        first_week[thursday] = false
-        first_week[friday] = false
-      end
+      first_week.partial_week_update(params[:start_date])
       first_week.save
       weekly_occurances = occurnaces / 7
       #we loop through the full two periods even though the first week is done in order to round up
@@ -136,13 +106,29 @@ class EventsController < ApplicationController
     event = Event.find_by(id: params[:id])
     event[:repeat] = false
     if params[:date2]
-      monthly_events = EventDate.where("event_id = ? AND date < ? AND date < ?", params[:id], params[:date1], params[:date2])
-      weekly_events = EventWeekly.where(event_id: params[:id])
+      monthly_events = EventDate.where("event_id = ? AND date < ? AND date > ?", params[:id], params[:date1], params[:date2])
+
+      week_num1 = params[:date1].to_datetime.strftime("%U").to_i
+      week_num2 = params[:date1].to_datetime.strftime("%U").to_i
+      first_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num1)
+      last_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num2)
+      weekly_events = EventWeekly.where("event_id = ? AND week_number < ? AND week_number < ?", params[:id], (week_num1 + 1), (week_num2 - 1))
+
+      first_week.beg_week_delete(params[:date1])
+      last_week.partial_week_update(params[:date2])
+
       monthly_events.destroy_all
       weekly_events.destroy_all
     else
-      EventDate.where("event_id = ? AND date < ? AND date < ?", params[:id], params[:date1], params[:date2])
+      monthly_events = EventDate.where("event_id = ? AND date < ?", params[:id], params[:date1], params[:date2])
 
+      week_num = params[:date1].to_datetime.strftime("%U").to_i
+      first_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num)
+      weekly_events = EventWeekly.where("event_id = ? AND week_number < ?", params[:id], week_num + 1)
+
+      first_week.beg_week_delete(params[:date1])
+      monthly_events.destroy_all
+      weekly_events.destroy_all
     end
   end
 

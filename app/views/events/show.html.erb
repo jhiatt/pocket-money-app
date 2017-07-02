@@ -1,10 +1,11 @@
 <!-- wee need a better way to show which days of the month/week were selected -->
-<!-- <div>Date: <%= @event.date %></div>
- --><div>Description: <%= @event.description %></div>
-<div>Receive or Pay?: <%= @impact %></div>
+<div>Date: <%= @event %></div>
+<div>Description: <%= @event.description %></div>
+<div>Receive or Pay?: <%= @event.impact %></div>
 <div>Repeat: <%= @event.repeat %></div>
 <div>Amount: <%= @event.amount %></div>
 <div>Category: <%= @event.category %></div>
 <% if @event.tag_id %>
   <div>Tag: <%=  %></div>
 <% end %>
+<a href="/events/<%= @event.id %>/edit">edit</a>
