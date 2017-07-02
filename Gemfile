@@ -5,6 +5,10 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+#because I'm paraniod about deleting stuff
+gem "paranoia", "~> 2.2"
+#https://github.com/rubysherpas/paranoia
+
 #calendar for events index
 gem "simple_calendar", "~> 2.0"
 #faker

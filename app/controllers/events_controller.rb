@@ -18,13 +18,8 @@ class EventsController < ApplicationController
   def create
     @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description], user_id: current_user.id)
     @event.save 
-    occurances = current_user.account.pocket_time * 2 / 30
     if @event.repeat && params[:frequency] = "monthly"
-      i = 0
-      occurances.times do
-        EventDate.create(event_id: @event.id, date: (params[:date1] + i.month))
-        i += 1
-      end
+      occurances(params[:date1])
       if params[:date2]
         i = 0
         occurances.times do
@@ -99,7 +94,15 @@ class EventsController < ApplicationController
 
   def update
     event = Event.find_by(id: params[:id])
-    event.update(impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description])
+    if event.amount != params[:amount]
+      week_num = params[:date].to_datetime.strftime("%U").to_i
+      event.update(repeat: false)
+      new_event = Event.create(impact: params[:impact], tag_id: params[:tag_id], repeat: params[:repeat], category: params[:category], description: params[:description], amount: params[:amount])
+      EventDate.where("event_id = ? AND date > ?", event.id, params[:date]).update_all(event_id: new_event.id)
+      EventDate.weekly("event_id = ? AND week_number > ?", event.id, week_num).update_all(event_id: new_event.id)
+    else
+      event.update(impact: params[:impact], tag_id: params[:tag_id], repeat: params[:repeat], category: params[:category], description: params[:description])
+    end
   end
 
   def destroy
@@ -129,6 +132,17 @@ class EventsController < ApplicationController
       first_week.beg_week_delete(params[:date1])
       monthly_events.destroy_all
       weekly_events.destroy_all
+    end
+  end
+
+  private
+
+  def occurances(date)
+    occurances = current_user.account.pocket_time * 2 / 30
+    i = 0
+    occurances.times do
+      EventDate.create(event_id: @event.id, date: (date + i.month))
+      i += 1      
     end
   end
 
