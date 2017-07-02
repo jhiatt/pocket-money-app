@@ -5,7 +5,6 @@ class Account < ApplicationRecord
 
 
   def pocket_money_update
-####### current user?  is this only for that user's events?
     u_pocket_money = last_balance
 
     pocket_money_expenses = Expense.where("date > ? AND date < ?", Time.now, (Time.now + pocket_time.days))
@@ -43,7 +42,7 @@ class Account < ApplicationRecord
         # How do we handle edited events, should we clear all future events before running this calc.  Will this mess up anything?
           #Maybe we should just destroy all future instances of that event_id when the event is edited
 
-    user.events.where.not(repeat: false).each do |event|
+    user.events.where.(weekly: false, repeat: true).each do |event|
     #only repeating events
       EventDate.where(event_id: event.id).each do |eventdate|
       #checks if the event is there already, if not it adds an instance
@@ -56,6 +55,8 @@ class Account < ApplicationRecord
           i += 1
         end
       end
+    end
+    user.events.where.(weekly: true, repeat: true).each do |event|
       EventWeekly.where(event_id: event.id).each do |eventweek|
         #for each week number in the period check if it is there and then add it if it's not
         j = 1

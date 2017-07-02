@@ -1,5 +1,16 @@
 <!-- wee need a better way to show which days of the month/week were selected -->
-<div>Date: <%= @event %></div>
+<% if @event.weekly == true %>
+  <div>
+    <% weekly_event = @event.event_weeklies.second %>
+    <%= p weekly_event %>
+  </div>
+<% elsif @event.weekly == false %>
+  <div>
+<!-- HOW DO I PASS THE DATE IN FROM THE CALENDAR? -->
+    <%= params[:date] %>
+  </div>
+<% end %>
+
 <div>Description: <%= @event.description %></div>
 <div>Receive or Pay?: <%= @event.impact %></div>
 <div>Repeat: <%= @event.repeat %></div>

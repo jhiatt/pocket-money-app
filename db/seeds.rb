@@ -62,6 +62,15 @@
 #   Expense.create!(date: Faker::Date.between("2017-07-01", "2017-07-31"), amount: rand(100).to_i, tag_id: Tag.all.sample.id, user_id: User.first.id)
 # end
 
-Event.where(user_id: 1).each do |event|
-  event.update(description: Faker::HarryPotter.quote)
+# Event.where(user_id: 1).each do |event|
+#   event.update(description: Faker::HarryPotter.quote)
+# end
+
+Event.all.each do |event|
+  event.update(weekly: false)
 end
+
+EventWeekly.all.each do |wevent|
+  wevent.event.update(weekly: true)
+end
+

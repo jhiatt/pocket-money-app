@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170629010423) do
+ActiveRecord::Schema.define(version: 20170702040753) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,6 +56,7 @@ ActiveRecord::Schema.define(version: 20170629010423) do
     t.integer "user_id"
     t.string "description"
     t.boolean "repeat"
+    t.boolean "weekly"
   end
 
   create_table "expenses", force: :cascade do |t|

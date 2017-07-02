@@ -7,7 +7,7 @@
     <%= event.description %>
     <br>
     <%= event.amount %>
-    <a href="/events/<%= event.id %>">closer look</a>
+    <%= link_to "closer look", "/events/#{event.id}", date: date %>
     <hr>
   <% end %>
   <% Event.find_weekly_events(date, current_user).each do |event| %>
