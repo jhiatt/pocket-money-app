@@ -11,6 +11,7 @@
 // about supported directives.
 //
 //= require rails-ujs
+//= require jquery
 //= require jquery-ui
 //= require vue
 //= require_tree .

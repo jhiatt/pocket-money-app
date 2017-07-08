@@ -1,68 +1,71 @@
 <h1><%= heading %></h1>
-<%= form_tag url, method: form_method do %>
-<!--   <div>Date: (Pleaase format Year, Month, Day)<input type="text" value="<%= @event %>" name="date" class="datepicker"></div>
- -->  <!-- see type "datetime-local" -->
-  <div>Description:<input type="text" value="<%= @event.description %>" name="description"></div>
+<div id="app">
+    {{ message }}
+  <%= form_tag url, method: form_method do %>
+  <!--   <div>Date: (Pleaase format Year, Month, Day)<input type="text" value="<%# @event %>" name="date" class="datepicker"></div>
+   -->  <!-- see type "datetime-local" -->
+    <div>Description:<input type="text" value="<%= @event.description %>" name="description"></div>
 
-  <div>Is this money you will receive or money you owe?
-    <select name="impact" id="impact"></div>
-      <option value="out">Will Pay</option>
-      <option value="in">Will Receive</option>
-    </select>
-
-  <div>Will this repeat?
-  <select name="repeat" id="repeat"></div>
-    <option value="True">Yes</option>
-    <option value="False">No</option>
-  </select>
-    <div>Monthly or weekly?
-    <select name="frequency"></div>
-      <option value="monthly">Monthly</option>
-      <option value="weekly">Weekly</option>
-    </select>
-    </div>
-    <!-- if monthly -->
-      <div>
-        monthly <input type="datetime-local" name="date1">
-        monthly <input type="datetime-local" name="date2">
-        monthly <input type="datetime-local" name="date3">
-        monthly <input type="datetime-local" name="date4">
-        monthly <input type="datetime-local" name="date5">
-      </div>
-    <!-- if weekly -->
-      <div>weekly
-        Starting: <input type="datetime-local" name="start_date" value=<%= Time.now %>>
-        Sunday<input type="checkbox" name="sunday" value="true">
-        Monday<input type="checkbox" name="monday" value="true">
-        Tuesday<input type="checkbox" name="tuesday" value="true">
-        Wednesday<input type="checkbox" name="wednesday" value="true">
-        Thursday<input type="checkbox" name="thursday" value="true">
-        Friday<input type="checkbox" name="friday" value="true">
-        Saturday<input type="checkbox" name="saturday" value="true">
-      </div>
-
-  <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
-
-  <div>Provide a category if you want:
-   <select name="category" id="category"></div>
-    <% @categories.each do |category| %>
-      <option value="<%= category %>"><%= category %></option>
-    <% end %>
-    </select>
-  </div>
-
-  <div>Tag this expense as:
-   <% if @tags%>
-      <select name="tag" id="tag"></div>
-        <% @tags.each do |tag| %>
-          <option value="<%= tag.id %>"><%= tag.description %></option>
-        <% end %>
+    <div>Is this money you will receive or money you owe?
+      <select name="impact" id="impact"></div>
+        <option value="out">Will Pay</option>
+        <option value="in">Will Receive</option>
       </select>
-    <% else %>
-    No Tags   
-    <% end %>
-    <a href="/tags/new">New Tag</a>
-  </div>
 
-  <div><input type="submit" value="<%= action %>"></div>
-<% end %>
+    <div>Will this repeat?
+    <select name="repeat" id="repeat"></div>
+      <option value="True">Yes</option>
+      <option value="False">No</option>
+    </select>
+      <div>Monthly or weekly?
+      <select name="frequency"></div>
+        <option value="monthly">Monthly</option>
+        <option value="weekly">Weekly</option>
+      </select>
+      </div>
+      <!-- if monthly -->
+        <div>
+          monthly <input type="datetime-local" name="date1">
+          monthly <input type="datetime-local" name="date2">
+          monthly <input type="datetime-local" name="date3">
+          monthly <input type="datetime-local" name="date4">
+          monthly <input type="datetime-local" name="date5">
+        </div>
+      <!-- if weekly -->
+        <div>weekly
+          Starting: <input type="datetime-local" name="start_date" value=<%= Time.now %>>
+          Sunday<input type="checkbox" name="sunday" value="true">
+          Monday<input type="checkbox" name="monday" value="true">
+          Tuesday<input type="checkbox" name="tuesday" value="true">
+          Wednesday<input type="checkbox" name="wednesday" value="true">
+          Thursday<input type="checkbox" name="thursday" value="true">
+          Friday<input type="checkbox" name="friday" value="true">
+          Saturday<input type="checkbox" name="saturday" value="true">
+        </div>
+
+    <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
+
+    <div>Provide a category if you want:
+     <select name="category" id="category"></div>
+      <% @categories.each do |category| %>
+        <option value="<%= category %>"><%= category %></option>
+      <% end %>
+      </select>
+    </div>
+
+    <div>Tag this expense as:
+     <% if @tags%>
+        <select name="tag" id="tag"></div>
+          <% @tags.each do |tag| %>
+            <option value="<%= tag.id %>"><%= tag.description %></option>
+          <% end %>
+        </select>
+      <% else %>
+      No Tags   
+      <% end %>
+      <a href="/tags/new">New Tag</a>
+    </div>
+
+    <div><input type="submit" value="<%= action %>"></div>
+  <% end %>
+</div>

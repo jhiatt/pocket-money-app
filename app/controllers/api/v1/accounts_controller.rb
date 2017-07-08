@@ -1,13 +1,16 @@
-class AccountsController < ApplicationController
+class Api::V1::AccountsController < ApplicationController
 
-  def edit
+  def show
+    @account = Account.find_by(id: params[:id])
+    puts @account
+    render "show.json.jbuilder"
   end
 
   def update
     account = Account.find_by(id: params[:id])
     account.update(last_balance: params[:last_balance], pocket_time: params[:pocket_time])
     account.pocket_money_update
-    redirect_to "/"
+    render "show.json.jbuilder"
   end
 
 end

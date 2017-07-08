@@ -36,6 +36,18 @@ Rails.application.routes.draw do
   delete "/tags/:id", to: 'tags#destroy'
 
   #Accounts
-  get "/accounts/:id/edit", to: 'accounts#edit'
-  patch "/accounts/:id", to: 'accounts#update'
+  namespace :api do
+    namespace :v1 do
+      get "/accounts/:id", to: 'accounts#show'
+      get "/accounts/:id/edit", to: 'accounts#edit'
+      patch "/accounts/:id", to: 'accounts#update'
+
+      get "/expenses/", to: 'expenses#index'
+      post "/expenses/new", to: 'expenses#create'
+      get "/expenses/:id", to: 'expenses#show'
+      patch "/expenses/:id/edit", to: 'expenses#edit'
+      
+
+    end
+  end
 end
