@@ -11,9 +11,16 @@ Pocket Money: {{account.pocket_money}}
   <div>
   
   <div v-if="tags.length !== 0">Tag (optional):
-    <select v-for="tag in tags" v-model="tagID"></div>
-        <option value="<%= tag.id %>">{{tag.description}}</option>
+    <select v-model="tagID"></div>
+        <option v-for="tag in tags" value="<%= tag.id %>">{{tag.description}}</option>
     </select>
+  </div>
+  <div>
+    <button v-on:click="newTag()">Create a New Tag</button>
+    <div v-if="newTagForm">
+      Tag Name:<input type="text" v-model=newTagDescription>
+      <button v-on:click="addNewTag(newTagDescription)">Add</button>
+    </div>
   </div>
   <div>Coming in or going out?
     <select v-model="newExpImpact"></div>

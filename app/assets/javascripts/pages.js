@@ -16,6 +16,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       newExpAmount: 0,
       newExpImpact: "Out",
       tagID: null,
+      newTagForm: false,
+      newTagDescription: "",
     },
     mounted: function() {
       this.accountID = document.getElementById("currentUser").value;
@@ -23,9 +25,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         console.log(result);
         this.account = result;
         console.log(this.account);
+        $.get('/api/v1/users/' + this.account.user_id + '/tags', function(result) {
+          this.tags = result;
+          console.log(this.tags);
+        }.bind(this));
       }.bind(this));
-      // var params = ;
-      // $.get('/api/v1/tags', )
     },
     methods: {
       updateAccount: function() {
@@ -37,9 +41,23 @@ document.addEventListener("DOMContentLoaded", function(event) {
       addExpense: function(amount, tagID, impact) {
         var params = {amount: amount, tag_id: tagID, user_id: this.account.user_id, date: new Date(), impact: impact};
         $.post('/api/v1/expenses/new', params, function(result) {
-          this.newExpense = result;
+          // this.newExpense = result;
           this.account = result.account;
         }.bind(this));
+        this.newExpAmount = null;
+      },
+      addNewTag: function(description) {
+        var params = {description: description, user_id: this.account.user_id};
+        $.post('/api/v1/tags', params, function(result) {
+          this.tags.push(result);
+          this.tagAccount = result.account;
+        }.bind(this));
+        this.newTagDescription = null;
+        console.log(this.tags);
+      },
+      newTag: function() {
+        this.newTagForm = !this.newTagForm;
+        return this.newTagForm;
       }
     }
   });

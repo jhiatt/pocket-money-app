@@ -35,7 +35,7 @@ Rails.application.routes.draw do
   patch "/tags/:id", to: 'tags#update'
   delete "/tags/:id", to: 'tags#destroy'
 
-  #Accounts
+  #API
   namespace :api do
     namespace :v1 do
       get "/accounts/:id", to: 'accounts#show'
@@ -46,6 +46,9 @@ Rails.application.routes.draw do
       post "/expenses/new", to: 'expenses#create'
       get "/expenses/:id", to: 'expenses#show'
       patch "/expenses/:id/edit", to: 'expenses#edit'
+
+      post "/tags", to: 'tags#create'
+      get "/users/:id/tags", to: 'tags#index'
       
 
     end

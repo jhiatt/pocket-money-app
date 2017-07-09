@@ -18,12 +18,9 @@
   </head>
 
   <body>
-    <% if current_user %>
-      <%= link_to "sign out", "/users/sign_out", method: :delete %>
-    <% end %>
     <% flash.each do |name, message| %>
-      <div class="alert alert-<%= name %> alert-dismissible" role="alert"><%= message %>
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <div class="alert alert-<%= name %> alert-dismissible alert-text" role="alert"><%= message %>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true" class="alert-text">&times;</span></button>
       </div> 
     <% end %>
 
@@ -82,8 +79,8 @@
               </li>
               <% if current_user %>
                 <li class="dropdown">
-                  <%= link_to "Sign Out", "/users/sign_out", method: :delete %>
-                  <a href="/users/sign_out" class="dropdown-toggle animated fadeIn animation-delay-7" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="blog">Sign Out
+                  <%= link_to "Sign Out", "/users/sign_out", class: "dropdown-toggle animated fadeIn animation-delay-7", role: "button", "aria-haspopup"=>"true", "aria-expanded"=>"false", "data-name"=> "blog", method: :delete %>
+                  <!-- <a href="/users/sign_out" class="dropdown-toggle animated fadeIn animation-delay-7" data-hover="dropdown" role="button" aria-haspopup="true" aria-expanded="false" data-name="blog">Sign Out -->
 <!--                   <i class="zmdi zmdi-chevron-down"></i>
 -->                  </a>
               <% end %>
