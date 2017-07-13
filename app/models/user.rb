@@ -9,7 +9,7 @@ class User < ApplicationRecord
   has_many :expenses
   has_one :account
 
-  before_create :set_pocket_time
+  # before_create :set_pocket_time
 
 
 

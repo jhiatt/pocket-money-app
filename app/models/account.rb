@@ -23,7 +23,7 @@ class Account < ApplicationRecord
     # end
     # update(pocket_money: u_pocket_money)
 
-
+    find_expenses(Time.now)
 
 
 
@@ -33,10 +33,10 @@ class Account < ApplicationRecord
     #we want to always keep enough dates ahead fo us for the pocket money calculation.  Pocket_period is the date of our latest 
     if pocket_period && (pocket_time.days.from_now > pocket_period)
         # roll_events
-        pocket_period = (Time.now + pocket_time)
+        update.pocket_period = (Time.now + pocket_time)
     elsif pocket_period.nil?
         # roll_events
-        pocket_period = (Time.now + pocket_time)
+        update.pocket_period = (Time.now + pocket_time.days)
     end
   end
 
@@ -90,10 +90,11 @@ class Account < ApplicationRecord
     end
   end
 
-  private
-
-  def find_events(date1, date2)
+  def find_expenses(user_id, date1, date2)
+    expenses = Expense.where("user_id = ? AND date > ? AND date < ?", user_id, date1, date2)
   end
+
+  private
 
 # Not sure why this is here
 # def set_pocket_time
