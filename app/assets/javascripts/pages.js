@@ -34,8 +34,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     methods: {
       updateAccount: function() {
         var params = {last_balance: this.lastBalance, pocket_time: this.pocketTime};
-        $.patch('/api/v1/accounts/' + this.accountID + '/edit.json', params, function(result) {
-          this.account = result;
+        $.ajax({
+          url: '/api/v1/accounts/' + this.accountID + '/edit.json',
+          type: 'PATCH',
+          data: params,
+          success: function(result) {
+            this.account = result;
+          }
         }.bind(this));
       },  
       addExpense: function(amount, tagID, impact) {

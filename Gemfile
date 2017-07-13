@@ -5,6 +5,9 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
+#gem I made!!
+gem 'week_to_date'
+
 #because I'm paraniod about deleting stuff
 gem "paranoia", "~> 2.2"
 #https://github.com/rubysherpas/paranoia
@@ -45,6 +48,8 @@ gem 'jquery-ui-rails'
 # gem 'capistrano-rails', group: :development
 
 group :development, :test do
+  #rspec
+    gem 'rspec-rails', '~> 3.5'
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
   # Adds support for Capybara system testing and selenium driver

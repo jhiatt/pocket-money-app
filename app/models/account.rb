@@ -1,23 +1,32 @@
 class Account < ApplicationRecord
   belongs_to :user
+  after_initialize :set_defaults
   #pocket time: number of days factored into pocket money calc
   #pocket period: date one pocket time away from date of last update.  When pocket period is less than 1 pocket time away from today an update should be run. (see def check_pocket_period, and def roll_events)
 
+  def set_defaults
+    self.balance_update_time ||= "2000-01-01 01:00:00"
+  end
 
   def pocket_money_update
     #need to update the date range to be as of when last updated
-    u_pocket_money = last_balance
+    # u_pocket_money = last_balance
 
-    pocket_money_expenses = Expense.where("date > ? AND date < ?", Time.now, (Time.now + pocket_time.days))
-    pocket_money_expenses.each do |expense|
-      u_pocket_money += expense.amount
-    end
+    # pocket_money_expenses = Expense.where("date > ? AND date < ?", balance_update_time, (balance_update_time + pocket_time.days))
+    # pocket_money_expenses.each do |expense|
+    #   u_pocket_money += expense.amount
+    # end
 
-    pocket_money_event = Event.joins(:event_dates).where("event_dates.date > ? AND event_dates.date < ?", Time.now, (Time.now + pocket_time.days))
-    pocket_money_event.each do |event|
-      u_pocket_money += event.amount
-    end
-    update(pocket_money: u_pocket_money)
+    # pocket_money_event = Event.joins(:event_dates).where("event_dates.date > ? AND event_dates.date < ?", balance_update_time, (balance_update_time + pocket_time.days))
+    # pocket_money_event.each do |event|
+    #   u_pocket_money += event.amount
+    # end
+    # update(pocket_money: u_pocket_money)
+
+
+
+
+
   end
 
   def check_pocket_period
@@ -57,6 +66,7 @@ class Account < ApplicationRecord
         end
       end
     end
+
     user.events.where.(weekly: true, repeat: true).each do |event|
       EventWeekly.where(event_id: event.id).each do |eventweek|
         #for each week number in the period check if it is there and then add it if it's not
@@ -78,6 +88,11 @@ class Account < ApplicationRecord
         end
       end
     end
+  end
+
+  private
+
+  def find_events(date1, date2)
   end
 
 # Not sure why this is here
