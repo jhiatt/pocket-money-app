@@ -56,43 +56,26 @@
 </div>
 
 <div>
-  Spending History:
-                  <div class="card-header">
-                      <h3 class="card-title">
-                        <i class="zmdi zmdi-graduation-cap"></i> Card Title</h3>
-                    </div>
-                    <table class="table table-no-border table-striped">
-                      <thead>
-                        <tr>
-                          <th>#</th>
-                          <th>First Name</th>
-                          <th>Last Name</th>
-                          <th>Username</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-  <div v-for="expense in expenses">
-                          <td>{{expense.date}} </td>
-                          <td>Mark</td>
-                          <td>Otto</td>
-                          <td>@mdo</td>
+  <div class="card-header">
+    <h3 class="card-title">
+      <i class="zmdi zmdi-graduation-cap"></i>Spending History</h3>
   </div>
-                        </tr>
-                        <tr>
-                          <td>2</td>
-                          <td>Jacob</td>
-                          <td>Thornton</td>
-                          <td>@fat</td>
-                        </tr>
-                        <tr>
-                          <td>3</td>
-                          <td>Larry</td>
-                          <td>the Bird</td>
-                          <td>@twitter</td>
-                        </tr>
-                      </tbody>
-                    </table>
+  <table class="table table-no-border table-striped">
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Amount</th>
+        <th>Tag</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr v-for="expense in expenses">
+        <td>{{expense.date}} </td>
+        <td>{{expense.amount}} </td>
+        <td>{{expense.tag_description}} </td>
+      </tr>
+    </tbody>
+  </table>
      
     
 </div>

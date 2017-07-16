@@ -21,20 +21,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
       newTagDescription: "",
     },
     mounted: function() {
-      this.accountID = document.getElementById("currentUser").value;
-      $.get('/api/v1/accounts/' + this.accountID + '.json', function(result) {
+      var that = this;
+      that.accountID = document.getElementById("currentUser").value;
+      $.get('/api/v1/accounts/' + that.accountID + '.json', function(result) {
         console.log(result);
-        this.account = result;
-        console.log(this.account);
-        $.get('/api/v1/users/' + this.account.user_id + '/tags', function(result) {
-          this.tags = result;
-          console.log(this.tags);
-        }.bind(this));
-        $.get('api/v1/users/' + this.account.user_id + '/expenses', function(result) {
-          this.expenses = result;
-          console.log(this.expenses);
-        }).bind(this);
-      }.bind(this));
+        that.account = result;
+        console.log(that.account);
+        $.get('/api/v1/users/' + that.account.user_id + '/tags', function(result) {
+          that.tags = result;
+          console.log(that.tags);
+        });
+        $.get('api/v1/users/' + that.account.user_id + '/expenses', function(result) {
+          that.expenses = result;
+          console.log(that.expenses);
+        });
+      });
     },
     methods: {
       updateAccount: function() {
