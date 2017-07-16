@@ -9,3 +9,12 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
   });
 });
+
+$(function() {
+  $(".description").each(function(i) {
+    var len = $(this).text().length;
+    if (len > 20) {
+      $(this).text($(this).text().substr(0,20) + '...');
+    }
+  });
+});

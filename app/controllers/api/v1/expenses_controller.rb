@@ -1,5 +1,7 @@
 class Api::V1::ExpensesController < ApplicationController
   def index
+    @expenses = Expense.where(user_id: params[:id])
+    render "index.json.jbuilder"
   end
 
   def create

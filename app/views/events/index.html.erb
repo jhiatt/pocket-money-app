@@ -1,20 +1,31 @@
-
+<div class="calendar">
+  
 
 <%= month_calendar(attribute: :starts_at) do |date| %>
-  <%= date %>
+  <div class="date">
+    <%= date.strftime("%e") %>
+  </div>
+  
 
   <% Event.find_monthly_events(date, current_user).each do |event| %>
-    <%= event.description %>
+    <%= number_to_currency(event.amount) %>
     <br>
-    <%= event.amount %>
+    <div class="description">
+      <%= event.description %>
+    </div>
     <%= link_to "closer look", "/events/#{event.id}", date: date %>
     <hr>
   <% end %>
   <% Event.find_weekly_events(date, current_user).each do |event| %>
-    <%= event.description %>
-    <a href="/events/<%= event.id %>">closer look</a>
+    <%= number_to_currency(event.amount) %>
     <br>
-    <%= event.amount %>
+    <div class="description">
+     <%= event.description %>
+    </div>
+    <a href="/events/<%= event.id %>">closer look</a>
     <hr>
   <% end %>
+
 <% end %>
+
+</div>

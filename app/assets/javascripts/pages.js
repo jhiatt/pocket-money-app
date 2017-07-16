@@ -6,6 +6,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     el: '#app',
     data: {
       tags: [],
+      expenses: [],
       pocketMoney: 0,
       amount: 0,
       accountID: "",
@@ -29,6 +30,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
           this.tags = result;
           console.log(this.tags);
         }.bind(this));
+        $.get('api/v1/users/' + this.account.user_id + '/expenses', function(result) {
+          this.expenses = result;
+          console.log(this.expenses);
+        }).bind(this);
       }.bind(this));
     },
     methods: {
@@ -64,6 +69,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         this.newTagForm = !this.newTagForm;
         return this.newTagForm;
       }
+
     }
   });
 });
