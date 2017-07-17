@@ -10,12 +10,21 @@ class Account < ApplicationRecord
 
   def pocket_money_update
     #need to update the date range to be as of when last updated
-    # u_pocket_money = last_balance
+    new_pocket_money = last_balance
+    binding.pry
+    expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_period.to_i.days))
+    event_array = self.find_events(balance_update_time, (balance_update_time + pocket_period.to_i.days))
 
-    # pocket_money_expenses = Expense.where("date > ? AND date < ?", balance_update_time, (balance_update_time + pocket_time.days))
-    # pocket_money_expenses.each do |expense|
-    #   u_pocket_money += expense.amount
-    # end
+    expense_array.each do |exp|
+      new_pocket_money += exp.amount
+    end
+
+    event_array.each do |object|
+      new_pocket_money += object.event.amount
+    end
+
+    update(pocket_money: new_pocket_money)
+    return new_pocket_money
 
     # pocket_money_event = Event.joins(:event_dates).where("event_dates.date > ? AND event_dates.date < ?", balance_update_time, (balance_update_time + pocket_time.days))
     # pocket_money_event.each do |event|
@@ -88,12 +97,12 @@ class Account < ApplicationRecord
     end
   end
 
-  def self.find_expenses(user_id, date1, date2)
-    expenses = Expense.where("user_id = ? AND date > ? AND date < ?", user_id, date1, date2)
+  def find_expenses(date1, date2)
+    expenses = Expense.where("user_id = ? AND date > ? AND date < ?", self.user.id, date1, date2)
   end
 
-  def self.find_events(user_id, date1, date2)
-    user = User.find_by(id: user_id)
+  def find_events(date1, date2)
+    user = self.user
     events = user.events
     event_array = []
     events.each do |event|

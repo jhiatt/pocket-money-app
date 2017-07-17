@@ -29,13 +29,13 @@ RSpec.describe Account, :type => :model do
     
     it "should return all expenses with that user Id" do
       expenses = Expense.all
-      result = Account.find_expenses(@user.id, "2017-07-01", "2017-07-30")
+      result = @account.find_expenses("2017-07-01", "2017-07-30")
       # binding.pry
       expect(result.length).to eq(Expense.all.count)
     end
 
     it "all amounts from the expenses should return 850" do
-      result = Account.find_expenses(@user.id, "2017-07-01", "2017-07-30")
+      result = @account.find_expenses("2017-07-01", "2017-07-30")
       total = 0
       # expect(result).to eq("foo")
       result.each do |expense|
@@ -58,12 +58,12 @@ RSpec.describe Account, :type => :model do
     end
 
     it "should bring in all events for a certain date range" do
-      result = Account.find_events(@user.id, "2017-07-01", "2017-07-30")
+      result = @account.find_events("2017-07-01", "2017-07-30")
       expect(result.length).to eq(4)
     end
 
     it "should bring in the full amount of those dates" do
-      result = Account.find_events(@user.id, "2017-07-01", "2017-07-30")
+      result = @account.find_events("2017-07-01", "2017-07-30")
       total = 0
       result.each do |event_date|
         total += event_date.event.amount
@@ -76,7 +76,7 @@ RSpec.describe Account, :type => :model do
     #     event3.event_weeklies.create(week_number: 28, monday: true, friday: true)
     #     event3.event_weeklies.create(week_number: 29, sunday: true, saturday: true)
     #     binding.pry
-    #   result = Account.find_events(@user.id, "2017-07-01", "2017-07-31")
+    #   result = @account.find_events(@user.id, "2017-07-01", "2017-07-31")
     #   expect(result.length).to eq(EventDate.all.count) # maybe needs a +4??
     # end
 
@@ -97,26 +97,55 @@ RSpec.describe Account, :type => :model do
       @date6 = EventDate.create(date: "2017-08-01", event_id: @event1.id)      
       @week3 = EventWeekly.create(week_number: 25, event_id: @event4.id, monday: true)
 
-      result = Account.find_events(@user.id, "2017-07-01", "2017-07-31")
+      result = @account.find_events("2017-07-01", "2017-07-31")
       expect(result.length).to eq(5)
     end
   end
 
 
   describe ".pocket_money_update" do
-    account = Account.new(last_balance: 100, user_id: 1)
-    event = Event.create(amount: 500, weekly: false, user_id: 1)
-    expense = Expense.create(amount: -100, user_id: 1)
+    before(:each) do
+      @user = User.create(email: Faker::Internet.free_email, password: "password")
+      @expense1 = Expense.create(amount: -100, user_id: @user.id, date: "2017-07-02")
+      @expense2 = Expense.create(amount: -250, user_id: @user.id, date: "2017-07-10")
+      @expense3 = Expense.create(amount: -500, user_id: @user.id, date: "2017-07-20")
+      @event1 = Event.create(amount: -100, user_id: @user.id)
+        @date1 = EventDate.create(date: "2017-07-02", event_id: @event1.id)
+        @date2 = EventDate.create(date: "2017-07-08", event_id: @event1.id)
+      @event2 = Event.create(amount: -250, user_id: @user.id)
+        @date3 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
+        @date4 = EventDate.create(date: "2017-07-08", event_id: @event2.id)
+      @account = Account.create(last_balance: 10000, user_id: @user.id, balance_update_time: "2017-07-01", pocket_period: "30")
+    end
+
+    # it "should return a combinded length of both arrays" do
+    #   expect(@account.pocket_money_update.length).to eq(7)
+    # end
 
     it "should add the last_balance to the event amounts and expenses within a date range" do
-      total = event.amount + account.last_balance + expense.amount
-
-      result = account.pocket_money_update
+      #total = event.amount + account.last_balance + expense.amount
+      total = 10000 - 100 - 250 - 500 - 100 - 100 - 250 - 250
+      result = @account.pocket_money_update
       expect(result).to eq(total)
+    end
+
+    it "should update the pocket money attribute for the user" do
+      total = 10000 - 100 - 250 - 500 - 100 - 100 - 250 - 250
+      @account.pocket_money_update
+      expect(@account.pocket_money).to eq(total)
+    end
+
+    it "should not require a hardcoded or imputed date range" do
+
     end
 
 
   #   # it "when given a high last_balance and small expenses, should return last_balance minus expenses" do
+      # @event5 = Event.create(amount: -9550, user_id: @user.id)
+      #   @date8 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
+      # @event5 = Event.create(amount: 9550, user_id: @user.id)
+      #   @date8 = EventDate.create(date: "2017-07-25", event_id: @event2.id)
+
   #   # end
 
       # it "ensures you don't run out of money in the middle of the month" do
