@@ -66,11 +66,15 @@
 #   event.update(description: Faker::HarryPotter.quote)
 # end
 
-Event.all.each do |event|
-  event.update(weekly: false)
-end
+# Event.all.each do |event|
+#   event.update(weekly: false)
+# end
 
-EventWeekly.all.each do |wevent|
-  wevent.event.update(weekly: true)
+# EventWeekly.all.each do |wevent|
+#   wevent.event.update(weekly: true)
+# end
+
+EventWeekly.all.each do |event|
+  event.update(year: "2017")
 end
 

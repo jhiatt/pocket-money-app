@@ -1,5 +1,5 @@
 class Event < ApplicationRecord
-  validates :repeat, :amount, :impact, presence: true
+  validates :amount, presence: true
   validates :amount, numericality: {only_decimal: true}
 
   belongs_to :tag, optional: true

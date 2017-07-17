@@ -23,8 +23,6 @@ class Account < ApplicationRecord
     # end
     # update(pocket_money: u_pocket_money)
 
-    find_expenses(Time.now)
-
 
 
   end
@@ -33,10 +31,10 @@ class Account < ApplicationRecord
     #we want to always keep enough dates ahead fo us for the pocket money calculation.  Pocket_period is the date of our latest 
     if pocket_period && (pocket_time.days.from_now > pocket_period)
         # roll_events
-        update.pocket_period = (Time.now + pocket_time)
+        update(pocket_period: (Time.now + pocket_time))
     elsif pocket_period.nil?
         # roll_events
-        update.pocket_period = (Time.now + pocket_time.days)
+        update(pocket_period: (Time.now + pocket_time.days))
     end
   end
 
@@ -90,15 +88,43 @@ class Account < ApplicationRecord
     end
   end
 
-  def find_expenses(user_id, date1, date2)
+  def self.find_expenses(user_id, date1, date2)
     expenses = Expense.where("user_id = ? AND date > ? AND date < ?", user_id, date1, date2)
   end
 
+  def self.find_events(user_id, date1, date2)
+    user = User.find_by(id: user_id)
+    events = user.events
+    event_array = []
+    events.each do |event|
+      if event.weekly
+        date_1 = WeekToDate::GetWeek.week(date1)
+        date_2 = WeekToDate::GetWeek.week(date2)
+        day_of_week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
+        @weeks_array = event.event_weeklies.where("year = ? AND year = ? AND week_number > ? AND week_number < ?", 
+                                                  date_1[0], date_2[0], date_1[1], date_2[1])
+        # binding.pry
+        @weeks_array.each do |week|
+          day_of_week.each do |day|
+            if week.day == true
+              week_hash = {date: WeekToDate::GetDate.get_date(week["year"], week["week_number"], day), event_id: week["event_id"]}
+              if week_hash["date"] > date1 && week_hash["date"] < date2
+                event_array << week_hash
+              end
+            end
+          end
+        end
+        
+      else
+        event_array << event.event_dates.where("date > ? AND date < ?", date1, date2)
+      end
+    end
+    event_array.flatten
+  end
+
+
+
   private
 
-# Not sure why this is here
-# def set_pocket_time
-#   self.pocket_time = 0
-# end
 
 end

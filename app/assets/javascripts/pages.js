@@ -50,12 +50,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
         }.bind(this));
       },  
       addExpense: function(amount, tagID, impact) {
+        var that = this;
         var params = {amount: amount, tag_id: tagID, user_id: this.account.user_id, date: new Date(), impact: impact};
         $.post('/api/v1/expenses/new', params, function(result) {
-          // this.newExpense = result;
+          this.newExpense = result;
           this.account = result.account;
         }.bind(this));
+        this.pocketMoney += this.newExpAmount;
         this.newExpAmount = null;
+        this.expenses.unshift(this.newExpense);
       },
       addNewTag: function(description) {
         var params = {description: description, user_id: this.account.user_id};
