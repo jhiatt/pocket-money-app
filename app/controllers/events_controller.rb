@@ -78,6 +78,7 @@ class EventsController < ApplicationController
                            saturday: params[:saturday])
       end
     end
+
     redirect_to "/events/#{@event.id}"
   end
 

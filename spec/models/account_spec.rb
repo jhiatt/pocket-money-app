@@ -16,6 +16,12 @@ RSpec.describe Account, :type => :model do
       expect(@account.pocket_period).to_not be_nil
       expect(@account.balance_update_time).to_not be_nil
     end
+
+    # it "updates pocket_period" do
+    #   @account.update(pocket_period: (Time.now - 1.day))
+    #   expect(@account.pocket_period).to be_between((Time.now + 29.days), (Time.now + 31.days)).inclusive
+    #   #####updating correctly, why isn't it saving?
+    # end
   end
 
   describe ".find_expenses" do
@@ -71,20 +77,23 @@ RSpec.describe Account, :type => :model do
       expect(total).to eq(-700)
     end
 
+    #####ask kenny
     # it "should be able to find weekly events too in date format" do
-    #   event3 = Event.create(amount: 50, user_id: @user.id, weekly: true)
-    #     event3.event_weeklies.create(week_number: 28, monday: true, friday: true)
-    #     event3.event_weeklies.create(week_number: 29, sunday: true, saturday: true)
-    #     binding.pry
-    #   result = @account.find_events(@user.id, "2017-07-01", "2017-07-31")
-    #   expect(result.length).to eq(EventDate.all.count) # maybe needs a +4??
+    #   before(:each) do
+    #     @event3 = Event.create(amount: 50, user_id: @user.id, weekly: true)
+    #       @event_week1 = EventWeekly.create(event_id: @event3.id, week_number: 28, monday: true, friday: true)
+    #       @event3.event_weeklies.create(week_number: 29, sunday: true, saturday: true)
+    #   end
+    #       binding.pry
+    #     result = @account.find_events("2017-07-01", "2017-07-31")
+    #     expect(result.length).to eq(EventDate.all.count + 4)
     # end
 
     # it "should be able to find weekly events too in date format, with specific dates" do
-    #   event3 = Event.create(amount: 50, user_id: @user.id, weekly: true)
-    #     week1 = EventWeekly.create(week_number: 28, monday: true, friday: true, event_id: event3.id)
+    #   @event3 = Event.create(amount: 50, user_id: @user.id, weekly: true)
+    #     week1 = EventWeekly.create(week_number: 28, monday: true, friday: true, event_id: @event3.id)
     #     #Monday, Jul 10, 28, Friday, Jul 14, 28
-    #     week2 = EventWeekly.create(week_number: 29, sunday: true, saturday: true, event_id: event3.id)
+    #     week2 = EventWeekly.create(week_number: 29, sunday: true, saturday: true, event_id: @event3.id)
     #     #Sunday, Jul 16, 29, Saturday, Jul 22, 29
 
     #   #UPDATE THIS          
@@ -154,11 +163,60 @@ RSpec.describe Account, :type => :model do
         @date8 = EventDate.create(date: "2017-07-02", event_id: @event5.id)
       @event6 = Event.create(amount: 5550, user_id: @user.id)
         @date8 = EventDate.create(date: "2017-07-25", event_id: @event6.id)
+      @expense5 = Expense.create(amount: 300, user_id: @user.id, date: "2017-07-09")
+      @expense6 = Expense.create(amount: 400, user_id: @user.id, date: "2017-07-15")
 
       @account.pocket_money_update
-      expect(@account.pocket_money).to eq(6550)
-
+      expect(@account.pocket_money).to eq(3200)
     end
+  end
+
+  describe ".roll_events" do
+    before(:each) do
+      @user = User.create(email: Faker::Internet.free_email, password: "password")
+      @account = Account.create(last_balance: 10000, user_id: @user.id, balance_update_time: "2017-07-01", pocket_time: 30)
+      # @event1 = Event.create(amount: -100, user_id: @user.id, repeat: true, weekly: false)
+      #   @date1 = EventDate.create(date: "2017-07-02", event_id: @event1.id)
+      #   @date2 = EventDate.create(date: "2017-07-08", event_id: @event1.id)
+      # @event2 = Event.create(amount: -250, user_id: @user.id, repeat: true, weekly: false)
+      #   @date3 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
+      #   @date4 = EventDate.create(date: "2017-07-08", event_id: @event2.id)
+    end
+
+    it "should create events for 2 month after current events for EventDates" do
+      @account.roll_events
+      expect(EventDate.all.length).to eq(16)
+    end
+
+    # it "should create events with the exact same day of the month as previous" do
+    #   @account.roll_events
+    #   events = @event2.event_dates.all
+    #   array = []
+    #   events.each do |event|
+    #     array << event.date.to_date
+    #   end
+    #   array2 = ["Sun, 02 Jul 2017", "Sat, 08 Jul 2017", "Wed, 02 Aug 2017", "Sat, 02 Sep 2017", "Mon, 02 Oct 2017", "Tue, 08 Aug 2017", "Fri, 08 Sep 2017", "Sun, 08 Oct 2017"]
+    #   expect(array).to eq(array2)
+    # end
+
+####I feel like this is working I don't know why there are errors
+    it "should create weekly events with the exact same day of the week as previous" do
+      # before(:each) do
+        @event3 = Event.create(amount: 50, user_id: @user.id, weekly: true, repeat: true)
+          @event_week1 = EventWeekly.create(event_id: @event3.id, week_number: 28, monday: true, friday: true, year: 2017)
+          @event3.event_weeklies.create(week_number: 29, sunday: true, saturday: true, year: 2017)
+      # end
+
+      @account.roll_events
+      events = @event.event_weeklies.all
+      array = []
+      events.each do |event|
+        array << event.week_number
+      end
+      array2 = [42]
+      expect(array).to eq(array2)
+    end
+
   end
 
 end
