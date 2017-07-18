@@ -9,20 +9,40 @@ class Account < ApplicationRecord
   end
 
   def pocket_money_update
-    #need to update the date range to be as of when last updated
-    new_pocket_money = last_balance
+    #the new PM calculation
+    new_pocket_money = 0
+    #used to calculate the reserved amount only
+    bucket = 0
+    #reserve_amount is the amount I need to start with to make sure no individual day is negative (an overdraft)
+    reserve_amount = 0
+
+    #needed to update the date range to be as of when last updated
+    expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
+    event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
+
+    array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
+    array_of_dates.each do |date|
+      x = Expense.where(id: expense_array.map(&:id), date: date)
+      x.each do |exp|
+        new_pocket_money += exp.amount
+        bucket += exp.amount
+      end
+      y = EventDate.where(id: event_array.map(&:id), date: date)
+      y.each do |object|
+          new_pocket_money += object.event.amount
+          bucket += object.event.amount
+      end
+      #if I do incorporate event_weeks I have to add something for that here
+      if bucket < 0
+        reserve_amount -= bucket
+        binding.pry
+        bucket = 0
+      end
+    end
+
+    new_pocket_money += last_balance
+    new_pocket_money -= reserve_amount
     binding.pry
-    expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_period.to_i.days))
-    event_array = self.find_events(balance_update_time, (balance_update_time + pocket_period.to_i.days))
-
-    expense_array.each do |exp|
-      new_pocket_money += exp.amount
-    end
-
-    event_array.each do |object|
-      new_pocket_money += object.event.amount
-    end
-
     update(pocket_money: new_pocket_money)
     return new_pocket_money
 
@@ -112,7 +132,6 @@ class Account < ApplicationRecord
         day_of_week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         @weeks_array = event.event_weeklies.where("year = ? AND year = ? AND week_number > ? AND week_number < ?", 
                                                   date_1[0], date_2[0], date_1[1], date_2[1])
-        # binding.pry
         @weeks_array.each do |week|
           day_of_week.each do |day|
             if week.day == true

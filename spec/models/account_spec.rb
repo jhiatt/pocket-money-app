@@ -115,7 +115,7 @@ RSpec.describe Account, :type => :model do
       @event2 = Event.create(amount: -250, user_id: @user.id)
         @date3 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
         @date4 = EventDate.create(date: "2017-07-08", event_id: @event2.id)
-      @account = Account.create(last_balance: 10000, user_id: @user.id, balance_update_time: "2017-07-01", pocket_period: "30")
+      @account = Account.create(last_balance: 10000, user_id: @user.id, balance_update_time: "2017-07-01", pocket_time: "30")
     end
 
     # it "should return a combinded length of both arrays" do
@@ -135,21 +135,30 @@ RSpec.describe Account, :type => :model do
       expect(@account.pocket_money).to eq(total)
     end
 
-    it "should not require a hardcoded or imputed date range" do
+    # it "should not require a hardcoded or imputed date range" do
+    # end
 
+
+    it "when given a high last_balance and small expenses, should return last_balance minus expenses" do
+      @event5 = Event.create(amount: -9550, user_id: @user.id)
+        @date8 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
+      @event5 = Event.create(amount: 3550, user_id: @user.id)
+        @date8 = EventDate.create(date: "2017-07-25", event_id: @event2.id)
+
+      @account.pocket_money_update
+      expect(@account.pocket_money).to be > 0
     end
 
+    it "ensures you don't run out of money in the middle of the month" do
+      @event5 = Event.create(amount: -5950, user_id: @user.id)
+        @date8 = EventDate.create(date: "2017-07-02", event_id: @event5.id)
+      @event6 = Event.create(amount: 5550, user_id: @user.id)
+        @date8 = EventDate.create(date: "2017-07-25", event_id: @event6.id)
 
-  #   # it "when given a high last_balance and small expenses, should return last_balance minus expenses" do
-      # @event5 = Event.create(amount: -9550, user_id: @user.id)
-      #   @date8 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
-      # @event5 = Event.create(amount: 9550, user_id: @user.id)
-      #   @date8 = EventDate.create(date: "2017-07-25", event_id: @event2.id)
+      @account.pocket_money_update
+      expect(@account.pocket_money).to eq(6550)
 
-  #   # end
-
-      # it "ensures you don't run out of money in the middle of the month" do
-      # end
+    end
   end
 
 end
