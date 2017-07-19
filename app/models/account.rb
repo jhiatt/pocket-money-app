@@ -53,10 +53,10 @@ class Account < ApplicationRecord
     #we want to always keep enough dates ahead of us for the pocket money calculation.  If we get within one pocket_time we need to roll another set of events so that we are allways two pocket_times ahead
     # Pocket Period is the date of the next update
     if pocket_period && (Time.now > pocket_period)
-        # roll_events
+        roll_events
         update(pocket_period: (Time.now + pocket_time.days))
     elsif pocket_period.nil?
-        # roll_events
+        roll_events
         update(pocket_period: (Time.now + pocket_time.days))
     end
   end
@@ -94,14 +94,13 @@ class Account < ApplicationRecord
         j = 1
         ((pocket_time * 2 + 30) / 7).times do |new_eventweek|
           week_num = eventweek.week_number
-        binding.pry
           week_num += j
           year_num = eventweek.year
-          if j < 52
+          if j > 52
             week_num = 1
             year_num = year_num.to_i + 1
           end
-          unless EventWeekly.exists?(event_id: event.id, week_number: (new_eventweek.week_number + j))
+          unless EventWeekly.exists?(event_id: event.id, week_number: (eventweek.week_number + j))
             EventWeekly.create(event_id: event.id,
                             year: year_num,
                             week_number: week_num, 
@@ -134,12 +133,11 @@ class Account < ApplicationRecord
         day_of_week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         @weeks_array = event.event_weeklies.where("year >= ? AND year <= ? AND week_number > ? AND week_number < ?", 
                                                   date_1[0], date_2[0], date_1[1], date_2[1])
-        # binding.pry
         @weeks_array.each do |week|
           day_of_week.each do |day|
-            if week.day == true
-              week_hash = {date: WeekToDate::GetDate.get_date(week["year"], week["week_number"], day), event_id: week["event_id"]}
-              if week_hash["date"] > date1 && week_hash["date"] < date2
+            if week[day] == true
+              week_hash = {date: WeekToDate::GetDate.get_date(week["year"].to_i, week["week_number"], day), event_id: week["event_id"]}
+              if week_hash[:date] > date1.to_date && week_hash[:date] < date2.to_date
                 event_array << week_hash
               end
             end

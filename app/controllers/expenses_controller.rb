@@ -35,4 +35,9 @@ class ExpensesController < ApplicationController
     expense.destroy
     redirect_to "/expenses/index"
   end
+  
+  def update_pocket
+    current_user.account.pocket_money_update
+  end
+
 end

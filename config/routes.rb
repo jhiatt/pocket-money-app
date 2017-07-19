@@ -46,9 +46,12 @@ Rails.application.routes.draw do
       post "/expenses/new", to: 'expenses#create'
       get "/expenses/:id", to: 'expenses#show'
       patch "/expenses/:id/edit", to: 'expenses#edit'
+      delete "/expenses/:id/delete", to: 'expenses#destroy'
 
       post "/tags", to: 'tags#create'
       get "/users/:id/tags", to: 'tags#index'
+
+      get "/users/:id/events", to: 'events#index'
       
 
     end

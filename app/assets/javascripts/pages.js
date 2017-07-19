@@ -19,6 +19,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       tagID: null,
       newTagForm: false,
       newTagDescription: "",
+      currentCash: 0,
+      editExpense: 0,
     },
     mounted: function() {
       var that = this;
@@ -35,6 +37,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
           that.expenses = result;
           console.log(that.expenses);
         });
+        $.get('api/v1/users/' + that.account.user_id + '/events', function(result) {
+          that.events = result;
+        });
+        that.calculateCurrentCash();
+        that.sortExpenses();
       });
     },
     methods: {
@@ -72,29 +79,43 @@ document.addEventListener("DOMContentLoaded", function(event) {
       newTag: function() {
         this.newTagForm = !this.newTagForm;
         return this.newTagForm;
-      }
+      },
+      calculateCurrentCash: function() {
+        var total = this.lastBalance;
+        
+        for (var i = 0; i > this.expenses.length; i++) {
+          total += this.expenses[i];
+        }
 
+        for (var j = 0; j > this.events.length; i++) {
+          total += this.events[j];
+        }
+      },
+      sortExpenses: function() {
+
+        return this.expenses.sort(function(expense1, expense2) {
+          // if false flips the order
+          return expense1.date > expense2.date;
+        }
+      },
+      deleteExpense: funcion(id) {
+        var params = {amount: this.editExpenseAmount, tag_id: this.editTagId};
+        $.ajax({
+          url: '/api/v1/accounts/' + id + '/edit.json',
+          type: 'DELETE',
+          success: function(result) {
+            this.expenses = result;
+      },
+      editExpense: function () {
+        var params = {amount: this.editExpenseAmount, tag_id: this.editTagId};
+        $.ajax({
+          url: '/api/v1/accounts/' + this.accountID + '/edit.json',
+          type: 'PATCH',
+          data: params,
+          success: function(result) {
+            this.editExpense = result;
+      }
     }
-  });
+  }
 });
 
-
-// class PagesController < ApplicationController
-//   before_action :authenticate_user!
-
-//   #before action: check to see if roll forward is needed (maybe at the calendar too?)
-//     #popup also lets you know it will be less frequent if you extend pocket time
-//   def index
-//     current_user.account.check_pocket_period
-//     @expense = Expense.new(date: Time.now)
-//     if current_user && current_user.tags.any?
-//       @tags = Tag.where(user_id: current_user.id)
-//       current_user.account.pocket_money_update
-//     elsif current_user
-//       @tags = []
-//     else
-//       redirect_to "/users/sign_in"
-//     end
-//   end
-
-// end

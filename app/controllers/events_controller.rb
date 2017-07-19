@@ -136,6 +136,10 @@ class EventsController < ApplicationController
     end
   end
 
+  def update_pocket
+    current_user.account.pocket_money_update
+  end
+
   private
 
   def occurances(date)
@@ -146,5 +150,6 @@ class EventsController < ApplicationController
       i += 1      
     end
   end
+
 
 end

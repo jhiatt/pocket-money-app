@@ -1,4 +1,6 @@
 class Api::V1::ExpensesController < ApplicationController
+  after_action :update_pocket, only: [:create, :update, :destroy]
+
   def index
     @expenses = Expense.where(user_id: params[:id])
     render "index.json.jbuilder"
@@ -22,5 +24,19 @@ class Api::V1::ExpensesController < ApplicationController
     user.account.pocket_money_update
     @account = user.account
     render "show.json.jbuilder"
+  end
+
+  def update
+  end
+
+  def destroy
+    expense = Expense.find_by(id: params[:id])
+    expense.delete
+    render "index.json.jbuilder"
+  end
+
+  def update_pocket
+    account = Account.find_by(user_id: params[:id])
+    account.pocket_money_update
   end
 end
