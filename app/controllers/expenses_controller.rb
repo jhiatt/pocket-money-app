@@ -1,6 +1,5 @@
 class ExpensesController < ApplicationController
   before_action :authenticate_user!
-  after_action :update_pocket, only: [:create, :update, :destroy]
 
   def index
     @expenses = Expense.all
@@ -29,10 +28,12 @@ class ExpensesController < ApplicationController
   def update
     expense = Expense.find_by(id: params[:id])
     expense.update(date: params[:date], amount: params[:amount], tag_id: params[:tag])
+    current_user.account.pocket_money_update
   end
   def destroy
     expense = Expense.find_by(id: params[:id])
     expense.destroy
+    current_user.account.pocket_money_update
     redirect_to "/expenses/index"
   end
   

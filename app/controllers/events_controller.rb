@@ -1,6 +1,5 @@
 class EventsController < ApplicationController
   before_action :authenticate_user!
-  after_action :update_pocket, only: [:create, :update, :destroy]
   def index
     @event_dates = EventDate.all
   end
@@ -19,32 +18,33 @@ class EventsController < ApplicationController
     @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description], user_id: current_user.id)
     @event.save 
     if @event.repeat && params[:frequency] = "monthly"
-      occurances(params[:date1])
-      if params[:date2]
+      occ_time = occurances(params[:date1])
+      if params[:date2] != ""
         i = 0
-        occurances.times do
-          EventDate.create(event_id: @event.id, date: (params[:date2] + i.month))
+        occ_time.times do
+          binding.pry
+          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date2]) + i.month))
           i += 1      
         end
       end
-      if params[:date3]
+      if params[:date3] != ""
         i = 0
-        occurances.times do
-          EventDate.create(event_id: @event.id, date: (params[:date3] + i.month))
+        occ_time.times do
+          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date3]) + i.month))
           i += 1 
         end     
       end
-      if params[:date4]
+      if params[:date4] != ""
       i = 0
-        occurances.times do
-          EventDate.create(event_id: @event.id, date: (params[:date4] + i.month))
+        occ_time.times do
+          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date4]) + i.month))
           i += 1      
         end
       end
-      if params[:date5]
+      if params[:date5] != ""
       i = 0
-        occurances.times do
-          EventDate.create(event_id: @event.id, date: (params[:date5] + i.month))
+        occ_time.times do
+          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date5]) + i.month))
           i += 1    
         end  
       end
@@ -78,7 +78,7 @@ class EventsController < ApplicationController
                            saturday: params[:saturday])
       end
     end
-
+    current_user.account.pocket_money_update
     redirect_to "/events/#{@event.id}"
   end
 
@@ -104,6 +104,7 @@ class EventsController < ApplicationController
     else
       event.update(impact: params[:impact], tag_id: params[:tag_id], repeat: params[:repeat], category: params[:category], description: params[:description])
     end
+    current_user.account.pocket_money_update
   end
 
   def destroy
@@ -134,6 +135,7 @@ class EventsController < ApplicationController
       monthly_events.destroy_all
       weekly_events.destroy_all
     end
+    current_user.account.pocket_money_update
   end
 
   def update_pocket
@@ -146,9 +148,10 @@ class EventsController < ApplicationController
     occurances = current_user.account.pocket_time * 2 / 30
     i = 0
     occurances.times do
-      EventDate.create(event_id: @event.id, date: (date + i.month))
+      EventDate.create(event_id: @event.id, date: (Date.parse(date) + i.month))
       i += 1      
     end
+    i
   end
 
 

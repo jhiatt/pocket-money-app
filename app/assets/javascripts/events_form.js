@@ -13,5 +13,5 @@ function weeklyForm(frequency) {
 }
 
 function addDateForm(element) {
-  element.nextSibling.classList.remove('hidden');
+  element.parentElement.nextElementSibling.classList.remove('hidden');
 }

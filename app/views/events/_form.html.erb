@@ -3,7 +3,7 @@
 
   <%= form_tag url, method: form_method do %>
   <!--   <div>Date: (Pleaase format Year, Month, Day)<input type="text" value="<%# @event %>" name="date" class="datepicker"></div>
-   -->  <!-- see type "datetime-local" -->
+   -->  <!-- see type "date" -->
     <div>Description:<input type="text" value="<%= @event.description %>" name="description"></div>
 
     <div>Is this money you will receive or money you owe?
@@ -24,15 +24,18 @@
       </select>
       <!-- if monthly -->
         <div id="monthly" >
-          monthly <div> <input type="datetime-local" name="date1"><button onclick="addDateForm(this)">Add additional date</button> </div>
-          <div class="hidden"> <input type="datetime-local" name="date2" ><button onclick="addDateForm(this)">Add additional date</button> </div>
-          <div class="hidden"> <input type="datetime-local" name="date3" ><button onclick="addDateForm(this)">Add additional date</button> </div>
-          <div class="hidden"> <input type="datetime-local" name="date4" ><button onclick="addDateForm(this)">Add additional date</button> </div>
-          <div class="hidden"> <input type="datetime-local" name="date5" ></div>
+          monthly <div> <input type="date" name="date1"><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
+          <div class="hidden">
+            <input type="date" name="date2" >
+            <div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div>
+          </div>
+          <div class="hidden"> <input type="date" name="date3" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
+          <div class="hidden"> <input type="date" name="date4" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
+          <div class="hidden"> <input type="date" name="date5" ></div>
         </div>
       <!-- if weekly -->
         <div id="weekly" class="hidden">weekly
-          Starting: <input type="datetime-local" name="start_date" value=<%= Time.now %>>
+          Starting: <input type="date" name="start_date" value=<%= Time.now %>>
           Sunday<input type="checkbox" name="sunday" value="true">
           Monday<input type="checkbox" name="monday" value="true">
           Tuesday<input type="checkbox" name="tuesday" value="true">

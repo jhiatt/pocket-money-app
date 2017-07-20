@@ -4,14 +4,14 @@
 
 <!-- Amount available -->
 <div class="progress">
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5000" aria-valuemin="0" aria-valuemax="6000" style="width: 80%">
-      <span class="sr-only">60% Complete (success)</span>
+  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5000" aria-valuemin="0" aria-valuemax="6000" v-bind:style="{width: pmPercentage}">
+      <span class="sr-only">{{pmPercentage}} Complete (success)</span>
   </div>
 </div>
 
 <div class="pocket-money, card">
     <div class="card-block">
-      Pocket Money: {{ account.pocket_money }}
+      Pocket Money: {{ pocketMoney }}
     </div>
 </div>
 

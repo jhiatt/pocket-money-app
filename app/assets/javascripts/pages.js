@@ -21,6 +21,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       newTagDescription: "",
       currentCash: 0,
       editExpense: 0,
+      pmPercentage: "50%",
+      // stringify
     },
     mounted: function() {
       var that = this;
@@ -28,6 +30,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       $.get('/api/v1/accounts/' + that.accountID + '.json', function(result) {
         console.log(result);
         that.account = result;
+        that.pocketMoney = parseInt(result.pocket_money);
         console.log(that.account);
         $.get('/api/v1/users/' + that.account.user_id + '/tags', function(result) {
           that.tags = result;
@@ -40,32 +43,33 @@ document.addEventListener("DOMContentLoaded", function(event) {
         $.get('api/v1/users/' + that.account.user_id + '/events', function(result) {
           that.events = result;
         });
-        that.calculateCurrentCash();
-        that.sortExpenses();
+        // that.calculateCurrentCash();
+        // that.sortExpenses();
       });
     },
     methods: {
       updateAccount: function() {
-        var params = {last_balance: this.lastBalance, pocket_time: this.pocketTime};
+        var that = this;
+        var params = {last_balance: that.lastBalance, pocket_time: that.pocketTime};
         $.ajax({
-          url: '/api/v1/accounts/' + this.accountID + '/edit.json',
+          url: '/api/v1/accounts/' + that.accountID + '/edit.json',
           type: 'PATCH',
           data: params,
           success: function(result) {
-            this.account = result;
+            that.account = result;
           }
         }.bind(this));
       },  
       addExpense: function(amount, tagID, impact) {
         var that = this;
-        var params = {amount: amount, tag_id: tagID, user_id: this.account.user_id, date: new Date(), impact: impact};
-        $.post('/api/v1/expenses/new', params, function(result) {
-          this.newExpense = result;
-          this.account = result.account;
+        var params = {amount: amount, tag_id: tagID, user_id: that.account.user_id, date: new Date(), impact: impact};
+        $.post('/api/v1/expenses', params, function(result) {
+          that.newExpense = result;
+          that.account = result.account;
+          that.pocketMoney += parseInt(amount);
+          that.newExpAmount = null;
+          that.expenses.unshift(that.newExpense);
         }.bind(this));
-        this.pocketMoney += this.newExpAmount;
-        this.newExpAmount = null;
-        this.expenses.unshift(this.newExpense);
       },
       addNewTag: function(description) {
         var params = {description: description, user_id: this.account.user_id};
@@ -93,29 +97,32 @@ document.addEventListener("DOMContentLoaded", function(event) {
       },
       sortExpenses: function() {
 
-        return this.expenses.sort(function(expense1, expense2) {
+        this.expenses.sort(function(expense1, expense2) {
           // if false flips the order
           return expense1.date > expense2.date;
-        }
+        });
       },
-      deleteExpense: funcion(id) {
-        var params = {amount: this.editExpenseAmount, tag_id: this.editTagId};
+      deleteExpense: function(id) {
         $.ajax({
-          url: '/api/v1/accounts/' + id + '/edit.json',
+          url: '/api/v1/expenses/' + id + '/delete.json',
           type: 'DELETE',
           success: function(result) {
             this.expenses = result;
+          }
+        }.bind(this));
       },
-      editExpense: function () {
+      editExpense: function(id) {
         var params = {amount: this.editExpenseAmount, tag_id: this.editTagId};
         $.ajax({
-          url: '/api/v1/accounts/' + this.accountID + '/edit.json',
+          url: '/api/v1/expenses/' + id + '/edit.json',
           type: 'PATCH',
           data: params,
           success: function(result) {
             this.editExpense = result;
-      }
+          }
+        });
+      },
     }
-  }
+  });
 });
 

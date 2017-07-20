@@ -43,7 +43,7 @@ Rails.application.routes.draw do
       patch "/accounts/:id", to: 'accounts#update'
 
       get "/users/:id/expenses", to: 'expenses#index'
-      post "/expenses/new", to: 'expenses#create'
+      post "/expenses", to: 'expenses#create'
       get "/expenses/:id", to: 'expenses#show'
       patch "/expenses/:id/edit", to: 'expenses#edit'
       delete "/expenses/:id/delete", to: 'expenses#destroy'

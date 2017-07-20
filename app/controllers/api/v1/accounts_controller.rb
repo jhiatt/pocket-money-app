@@ -10,6 +10,7 @@ class Api::V1::AccountsController < ApplicationController
     account = Account.find_by(id: params[:id])
     account.update(last_balance: params[:last_balance], pocket_time: params[:pocket_time], balance_update_time: Time.now)
     account.pocket_money_update
+      binding.pry
     render "show.json.jbuilder"
   end
 

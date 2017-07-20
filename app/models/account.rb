@@ -44,7 +44,6 @@ class Account < ApplicationRecord
 
     new_pocket_money = last_balance - reserve_amount
 
-    # binding.pry
     update(pocket_money: new_pocket_money)
     return new_pocket_money
   end
@@ -128,8 +127,8 @@ class Account < ApplicationRecord
     event_array = []
     events.each do |event|
       if event.weekly
-        date_1 = WeekToDate::GetWeek.week(date1)
-        date_2 = WeekToDate::GetWeek.week(date2)
+        date_1 = WeekToDate::GetWeek.week(date1.to_s)
+        date_2 = WeekToDate::GetWeek.week(date2.to_s)
         day_of_week = ["sunday", "monday", "tuesday", "wednesday", "thursday", "friday", "saturday"]
         @weeks_array = event.event_weeklies.where("year >= ? AND year <= ? AND week_number > ? AND week_number < ?", 
                                                   date_1[0], date_2[0], date_1[1], date_2[1])
