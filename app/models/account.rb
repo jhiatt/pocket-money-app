@@ -5,7 +5,7 @@ class Account < ApplicationRecord
   #pocket period: date one pocket time away from date of last update.  When pocket period is less than 1 pocket time away from today an update should be run. (see def check_pocket_period, and def roll_events)
 
   def set_defaults
-    self.balance_update_time ||= "2000-01-01 01:00:00"
+    self.balance_update_time ||= Time.now
   end
 
   def pocket_money_update
@@ -14,7 +14,6 @@ class Account < ApplicationRecord
     #reserve_amount is the amount I need to start with to make sure no individual day is negative (an overdraft)
     reserve_amount = 0
 
-    #needed to update the date range to be as of when last updated
     expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
     event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
 
@@ -22,12 +21,12 @@ class Account < ApplicationRecord
     array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
     array_of_dates.each do |date|
       #get the value of each day individually
-      x = Expense.where(id: expense_array.map(&:id), date: date)
+      x = Expense.where(id: expense_array.map{ |expense| expense[:id] }, date: date)
       x.each do |exp|
         # new_pocket_money += exp.amount
         bucket += exp.amount
       end
-      y = EventDate.where(id: event_array.map(&:id), date: date)
+      y = EventDate.where(id: event_array.map{ |event| event[:id] }, date: date)
       y.each do |object|
           # new_pocket_money += object.event.amount
           bucket += object.event.amount
@@ -41,10 +40,25 @@ class Account < ApplicationRecord
         bucket = 0
       end
     end
+    recent_amounts = 0
+    event_array.each do |event|
+      if event.date > balance_update_time && event.date < Time.now
+        recent_amounts += event.event.amount
+      end
+    end
+    expense_array.each do |expense|
+      if expense.date > balance_update_time && expense.date < Time.now
+        recent_amounts += expense.amount
+      end
+    end
 
-    new_pocket_money = last_balance - reserve_amount
+
+
+    current_balance = last_balance - recent_amounts
+    new_pocket_money = current_balance - reserve_amount
 
     update(pocket_money: new_pocket_money)
+    binding.pry
     return new_pocket_money
   end
 
@@ -135,7 +149,8 @@ class Account < ApplicationRecord
         @weeks_array.each do |week|
           day_of_week.each do |day|
             if week[day] == true
-              week_hash = {date: WeekToDate::GetDate.get_date(week["year"].to_i, week["week_number"], day), event_id: week["event_id"]}
+              # week_hash = {date: WeekToDate::GetDate.get_date(week["year"].to_i, week["week_number"], day), id: week["event_id"]}
+              week_hash = EventDate.new(date: WeekToDate::GetDate.get_date(week["year"].to_i, week["week_number"], day), event_id: week["event_id"])
               if week_hash[:date] > date1.to_date && week_hash[:date] < date2.to_date
                 event_array << week_hash
               end

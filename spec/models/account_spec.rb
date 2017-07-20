@@ -133,7 +133,7 @@ RSpec.describe Account, :type => :model do
       @event2 = Event.create(amount: -250, user_id: @user.id)
         @date3 = EventDate.create(date: "2017-07-02", event_id: @event2.id)
         @date4 = EventDate.create(date: "2017-07-08", event_id: @event2.id)
-      @account = Account.create(last_balance: 10000, user_id: @user.id, balance_update_time: "2017-07-01", pocket_time: "30")
+      @account = Account.create(last_balance: 10000, pocket_money: 120, user_id: @user.id, balance_update_time: "2017-07-01", pocket_time: "30")
     end
 
     # it "should return a combinded length of both arrays" do
@@ -145,9 +145,10 @@ RSpec.describe Account, :type => :model do
       @week3 = EventWeekly.create(week_number: 27, event_id: @event4.id, monday: true, year: 2017)
       
       #total = event.amount + account.last_balance + expense.amount
-      total = 10000 - 100 - 250 - 500 - 100 - 100 - 250 - 250 - 50
+      total = 10000 - 100 - 250 - 500 - 100 - 100 - 250 - 250 - 50 + 50
       result = @account.pocket_money_update
       expect(result).to eq(total)
+      expect(@account.pocket_money).to eq(total)
     end
 
     it "should update the pocket money attribute for the user" do
