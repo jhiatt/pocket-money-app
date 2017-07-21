@@ -36,8 +36,9 @@ class Api::V1::ExpensesController < ApplicationController
     expense = Expense.find_by(id: params[:id])
     amount = expense.amount
     user = expense.user
-    expense.delete
+    expense.destroy
     update_pocket(user.id)
+    @expenses = Expense.where(user_id: user.id)
     render "index.json.jbuilder"
     # render json: {amount: amount}
   end

@@ -90,15 +90,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
       updateAccount: function() {
         var that = this;
         var params = {last_balance: that.lastBalance, pocket_time: that.pocketTime};
+        console.log(that.accountID);
         $.ajax({
-          url: '/api/v1/accounts/' + that.accountID + '/edit.json',
+          url: '/api/v1/accounts/' + that.accountID + '.json',
           type: 'PATCH',
           data: params,
           success: function(result) {
             that.account = result;
           }
-        }.bind(this));
-      },  
+        });
+      },
       addExpense: function(amount, tagID, impact) {
         var that = this;
         if (that.newExpImpact === "out") {
@@ -137,15 +138,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
         });
       },
       deleteExpense: function(id, amount) {
+        var that = this;
         $.ajax({
           url: '/api/v1/expenses/' + id + '/delete.json',
           type: 'DELETE',
           success: function(result) {
-            this.expenses = result;
-            this.pocketMoney += parseInt(amount);
-            this.currentBalance += parseInt(amount);
+            that.expenses = result;
+            that.pocketMoney += parseInt(amount);
+            that.currentBalance += parseInt(amount);
+
           }
-        }.bind(this));
+        });
       },
       editExpense: function(id) {
         var params = {amount: this.editExpenseAmount, tag_id: this.editTagId};

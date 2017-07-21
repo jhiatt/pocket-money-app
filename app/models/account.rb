@@ -9,13 +9,16 @@ class Account < ApplicationRecord
   end
 
   def pocket_money_update
+    check_pocket_period
     #used to calculate the reserved amount only
     bucket = 0
     #reserve_amount is the amount I need to start with to make sure no individual day is negative (an overdraft)
     reserve_amount = 0
 
-    expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
-    event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
+    # expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
+    # event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
+    expense_array = self.find_expenses(balance_update_time, pocket_period)
+    event_array = self.find_events(balance_update_time, pocket_period)
 
     #obtain an array of all the dates
     array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
@@ -36,7 +39,7 @@ class Account < ApplicationRecord
       #if the day brings us negative, add to the reserve amount 
       if bucket < 0
         reserve_amount -= bucket
-        # binding.pry
+        #  
         bucket = 0
       end
     end
@@ -58,7 +61,7 @@ class Account < ApplicationRecord
     new_pocket_money = current_balance - reserve_amount
 
     update(pocket_money: new_pocket_money)
-    binding.pry
+     
     return new_pocket_money
   end
 
