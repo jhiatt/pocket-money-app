@@ -13,6 +13,9 @@
     <div class="card-block">
       Pocket Money: {{ pocketMoney }}
     </div>
+    <div>
+    Current Balance: {{currentBalance}}
+    </div>
 </div>
 
 
@@ -24,9 +27,10 @@
   
   <div v-if="tags.length !== 0">Tag (optional):
     <select v-model="tagID"></div>
-        <option v-for="tag in tags" value="<%= tag.id %>">{{tag.description}}</option>
+        <option v-for="tag in tags" v-bind:value="tag.id">{{tag.description}}</option>
     </select>
   </div>
+  <!-- TAG -->
   <div>
     <button v-on:click="newTag()">Create a New Tag</button>
     <div v-if="newTagForm">
@@ -37,7 +41,7 @@
   <div>Coming in or going out?
     <select v-model="newExpImpact"></div>
       <option value="In">Received</option>
-      <option value="Out">Paid</option>
+      <option value="out">Paid</option>
     </select>
   <div><button v-on:click="addExpense(newExpAmount, tagID, newExpImpact)">Submit</button>
 
@@ -69,11 +73,11 @@
       </tr>
     </thead>
     <tbody>
-      <tr v-for="expense in expenses">
+      <tr v-for="expense in sortedExpenses">
         <td>{{expense.date}} </td>
         <td>{{expense.amount}} </td>
         <td>{{expense.tag_description}} </td>
-        <td><button v-on:click="deleteExpense(expense.id)">delete</button></td>
+        <td><button v-on:click="deleteExpense(expense.id, expense.amount)">delete</button></td>
       </tr>
     </tbody>
   </table>

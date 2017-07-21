@@ -15,14 +15,19 @@ class EventsController < ApplicationController
   end
 
   def create
-    @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: params[:amount], category: params[:category], description: params[:description], user_id: current_user.id)
-    @event.save 
+    if params[:impact] = "in"
+      amount = params[:amount].to_d.abs
+    elsif params[:impact] = "out"
+      amount = params[:amount].to_d.abs * -1
+    end
+      @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact])
+      @event.save 
     if @event.repeat && params[:frequency] = "monthly"
       occ_time = occurances(params[:date1])
       if params[:date2] != ""
         i = 0
         occ_time.times do
-          binding.pry
+           
           EventDate.create(event_id: @event.id, date: (Date.parse(params[:date2]) + i.month))
           i += 1      
         end

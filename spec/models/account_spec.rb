@@ -40,7 +40,7 @@ RSpec.describe Account, :type => :model do
     it "should return all expenses with that user Id" do
       expenses = Expense.all
       result = @account.find_expenses("2017-07-01", "2017-07-30")
-      # binding.pry
+      #  
       expect(result.length).to eq(Expense.all.count)
     end
 

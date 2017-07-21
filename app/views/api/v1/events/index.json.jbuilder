@@ -1,11 +1,11 @@
 json.array! @events_all do |eventdate|
-  # binding.pry
+  #  
   # if eventdate.class == "Hash"
     json.date eventdate[:date]
   # else
   #   json.date eventdate.date
   # end
-  # binding.pry
+  #  
   event = eventdate[:event] || Event.find_by(id: eventdate[:event_id])
   # if eventdate.event
     # json.amount eventdate.event.id

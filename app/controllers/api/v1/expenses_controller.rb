@@ -12,9 +12,9 @@ class Api::V1::ExpensesController < ApplicationController
     else
       amount = params[:amount]
     end
-    if params[:impact] == "out"
-      amount = -amount
-    end
+    # if params[:impact] == "out"
+    #   amount = -amount
+    # end
     @expense = Expense.new(date: params[:date], amount: amount, user_id: params[:user_id])
     if params[:tag_id]
       @expense.tag_id = params[:tag_id]
@@ -34,10 +34,12 @@ class Api::V1::ExpensesController < ApplicationController
 
   def destroy
     expense = Expense.find_by(id: params[:id])
+    amount = expense.amount
     user = expense.user
     expense.delete
     update_pocket(user.id)
     render "index.json.jbuilder"
+    # render json: {amount: amount}
   end
 
   def update_pocket(user_id)

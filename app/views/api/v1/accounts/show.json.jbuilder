@@ -5,6 +5,7 @@ json.pocket_money @account.pocket_money
 json.pocket_time @account.pocket_time
 json.user_id @account.user_id
 json.pocket_period @account.pocket_period
+json.balance_update_time @account.balance_update_time
 json.user do 
   json.user_id @account.user.id
   json.email @account.user.email

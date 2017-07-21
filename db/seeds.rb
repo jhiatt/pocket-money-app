@@ -74,7 +74,17 @@
 #   wevent.event.update(weekly: true)
 # end
 
-EventWeekly.all.each do |event|
-  event.update(year: "2017")
+# EventWeekly.all.each do |event|
+#   event.update(year: "2017")
+# end
+array = ["in", "out"]
+Event.all.each do |event|
+  event.impact = array.sample
+  if event.impact == "in"
+    event.amount = event.amount.to_d.abs
+  elsif event.impact == "out"
+    event.amount = event.amount.to_d.abs * -1
+  end
+  # puts amount
+  event.save
 end
-
