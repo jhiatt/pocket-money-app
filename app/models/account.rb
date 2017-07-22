@@ -15,10 +15,10 @@ class Account < ApplicationRecord
     #reserve_amount is the amount I need to start with to make sure no individual day is negative (an overdraft)
     reserve_amount = 0
 
-    # expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
-    # event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
-    expense_array = self.find_expenses(balance_update_time, pocket_period)
-    event_array = self.find_events(balance_update_time, pocket_period)
+    expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
+    event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
+    # expense_array = self.find_expenses(balance_update_time, pocket_period)
+    # event_array = self.find_events(balance_update_time, pocket_period)
 
     #obtain an array of all the dates
     array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
