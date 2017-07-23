@@ -90,6 +90,11 @@ class EventsController < ApplicationController
   def show
     @event = Event.find_by(id: params[:id])
     @impact = @event.impact_cleaner
+    @date = params[:date]
+    # if @event.weekly
+    #   WeekToDate::GetDate.get_date(year, week_number, day_as_string)
+    # else
+    # end
   end
 
   def edit
@@ -101,46 +106,55 @@ class EventsController < ApplicationController
   def update
     event = Event.find_by(id: params[:id])
     if event.amount != params[:amount]
-      week_num = params[:date].to_datetime.strftime("%U").to_i
+      week_num_array = WeekToDate::GetWeek.week(params[:date1].to_s)
+      week_num = week_num_array[1]
       event.update(repeat: false)
-      new_event = Event.create(impact: params[:impact], tag_id: params[:tag_id], repeat: params[:repeat], category: params[:category], description: params[:description], amount: params[:amount])
+      new_event = Event.create(impact: params[:impact], tag_id: params[:tag_id], repeat: params[:repeat], category: params[:category], description: params[:description], amount: params[:amount], user_id: current_user.id)
       EventDate.where("event_id = ? AND date > ?", event.id, params[:date]).update_all(event_id: new_event.id)
-      EventDate.weekly("event_id = ? AND week_number > ?", event.id, week_num).update_all(event_id: new_event.id)
+      EventWeekly.where("event_id = ? AND week_number > ?", event.id, week_num).update_all(event_id: new_event.id)
     else
       event.update(impact: params[:impact], tag_id: params[:tag_id], repeat: params[:repeat], category: params[:category], description: params[:description])
     end
     current_user.account.pocket_money_update
+    flash[:success] = "Event updated successfully"
+    redirect_to "/events"
   end
 
   def destroy
     event = Event.find_by(id: params[:id])
     event[:repeat] = false
-    if params[:date2]
-      monthly_events = EventDate.where("event_id = ? AND date < ? AND date > ?", params[:id], params[:date1], params[:date2])
+    if params[:date2] != ""
+      monthly_events = EventDate.where("event_id = ? AND date > ? AND date < ?", params[:id], params[:date1].to_datetime, params[:date2].to_datetime)
 
       week_num1 = params[:date1].to_datetime.strftime("%U").to_i
       week_num2 = params[:date1].to_datetime.strftime("%U").to_i
       first_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num1)
       last_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num2)
-      weekly_events = EventWeekly.where("event_id = ? AND week_number < ? AND week_number < ?", params[:id], (week_num1 + 1), (week_num2 - 1))
+      weekly_events = EventWeekly.where("event_id = ? AND week_number > ? AND week_number < ?", params[:id], (week_num1 + 1), (week_num2 - 1))
 
-      first_week.beg_week_delete(params[:date1])
-      last_week.partial_week_update(params[:date2])
+      if first_week
+        first_week.beg_week_delete(params[:date1])
+      end
+      if last_week
+        last_week.partial_week_update(params[:date2])
+      end
 
       monthly_events.destroy_all
       weekly_events.destroy_all
     else
-      monthly_events = EventDate.where("event_id = ? AND date < ?", params[:id], params[:date1], params[:date2])
+      monthly_events = EventDate.where("event_id = ? AND date > ?", params[:id], params[:date1].to_datetime)
 
       week_num = params[:date1].to_datetime.strftime("%U").to_i
-      first_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num)
-      weekly_events = EventWeekly.where("event_id = ? AND week_number < ?", params[:id], week_num + 1)
-
-      first_week.beg_week_delete(params[:date1])
+        first_week = EventWeekly.find_by(event_id: params[:id], week_number: week_num)
+      weekly_events = EventWeekly.where("event_id = ? AND week_number > ?", params[:id], week_num + 1)
+      if first_week
+        first_week.beg_week_delete(params[:date1])
+      end
       monthly_events.destroy_all
       weekly_events.destroy_all
     end
     current_user.account.pocket_money_update
+    redirect_to "/events"
   end
 
   def update_pocket

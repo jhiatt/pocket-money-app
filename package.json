@@ -1,5 +1,7 @@
 {
   "name": "pocket-money-app",
   "private": true,
-  "dependencies": {}
+  "dependencies": {
+    "vue2-filters": "^0.1.9"
+  }
 }

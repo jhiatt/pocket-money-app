@@ -17,6 +17,7 @@
       <option value="True">Yes</option>
       <option value="False">No</option>
     </select>
+    <% unless edit %>
       <div>Monthly or weekly?
       <select name="frequency" onchange="weeklyForm(this.value)"></div>
         <option value="monthly">Monthly</option>
@@ -44,6 +45,7 @@
           Friday<input type="checkbox" name="friday" value="true">
           Saturday<input type="checkbox" name="saturday" value="true">
         </div>
+      <% end %>
 
     <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
 
@@ -58,6 +60,7 @@
     <div>Tag this expense as:
      <% if @tags%>
         <select name="tag" id="tag"></div>
+          <option value="none">None</option>
           <% @tags.each do |tag| %>
             <option value="<%= tag.id %>"><%= tag.description %></option>
           <% end %>

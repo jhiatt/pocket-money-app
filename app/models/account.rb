@@ -29,7 +29,7 @@ class Account < ApplicationRecord
         # new_pocket_money += exp.amount
         bucket += exp.amount
       end
-      y = EventDate.where(id: event_array.map{ |event| event[:id] }, date: date)
+      y = EventDate.where(event_id: event_array.map{ |event| event[:id] }, date: date)
       y.each do |object|
           # new_pocket_money += object.event.amount
           bucket += object.event.amount
@@ -49,9 +49,10 @@ class Account < ApplicationRecord
         recent_amounts += event.event.amount
       end
     end
+
     expense_array.each do |expense|
       if expense.date > balance_update_time && expense.date < Time.now
-        recent_amounts += expense.amount
+        recente_amounts += expense.amount
       end
     end
 

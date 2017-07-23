@@ -7,14 +7,15 @@
 <% elsif @event.weekly == false %>
   <div>
 <!-- HOW DO I PASS THE DATE IN FROM THE CALENDAR? -->
-    <%= params[:date] %>
+    Date: <%= params[:date] %>
   </div>
 <% end %>
 
+<div>Date: <%= @date %></div>
 <div>Description: <%= @event.description %></div>
 <div>Receive or Pay?: <%= @event.impact %></div>
 <div>Repeat: <%= @event.repeat %></div>
-<div>Amount: <%= @event.amount %></div>
+<div>Amount: <%= number_to_currency(@event.amount) %></div>
 <div>Category: <%= @event.category %></div>
 <% if @event.tag_id %>
   <div>Tag: <%=  %></div>

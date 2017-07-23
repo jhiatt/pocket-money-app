@@ -11,4 +11,10 @@ class Api::V1::TagsController < ApplicationController
     render "show.json.jbuilder"
   end
 
+  def destroy
+    tag = Tag.find_by(id: params[:id])
+    tag.destroy
+    redirect_to "/tags"
+  end
+
 end

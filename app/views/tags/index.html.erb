@@ -1,1 +1,7 @@
-index.html.erb
+Your list of tags:
+<% @tags.each do |tag| %>
+  <div>
+    <%= tag.description %>
+    <%= link_to "delete tag", "/tags/#{tag.id}", method: :delete %>
+  </div>
+<% end %>

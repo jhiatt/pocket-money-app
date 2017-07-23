@@ -25,7 +25,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
       currentBalance: 0,
       pocketTime: 0,
       pmPercentage: "50%",
-      userId: 0
+      userId: 0,
+      hideExpenseForm: false,
+      accountUpdateForm: false,
       // stringify
 
     },
@@ -71,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         for (var i = 0; i < that.expenses.length; i++) {
           var expenseDate = new Date(that.expenses[i].date);
           var balanceUpdateTime = new Date(that.account.balance_update_time);
-          if (expenseDate < today && expenseDate < balanceUpdateTime ) {
+          if (expenseDate < today && expenseDate > balanceUpdateTime ) {
             that.currentBalance += parseInt(that.expenses[i].amount);
           }
         }
@@ -79,10 +81,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
         for (var j = 0; j < that.events.length; j++) {
           var eventDate = new Date(that.events[j].date);
           var balanceUpdateTime2 = new Date(that.account.balance_update_time);
-          if (eventDate < today && eventDate < balanceUpdateTime2 ) {
+          if (eventDate < today && eventDate > balanceUpdateTime2 ) {
             that.currentBalance += parseInt(that.events[j].amount);
           }
           that.pmPercentage = that.pocketMoney / that.currentBalance;
+          that.pmPercentage = JSON.stringify(that.pmPercentage) + "%";
 
         }
         console.log(that.currentBalance);
@@ -90,13 +93,20 @@ document.addEventListener("DOMContentLoaded", function(event) {
       updateAccount: function() {
         var that = this;
         var params = {last_balance: that.lastBalance, pocket_time: that.pocketTime};
-        console.log(that.accountID);
         $.ajax({
           url: '/api/v1/accounts/' + that.accountID + '.json',
           type: 'PATCH',
           data: params,
           success: function(result) {
-            that.account = result;
+            console.log('I am the updated balance object');
+            console.log(result);
+            //that.account = result;
+            console.log("I'm the currentBalance after the update");
+            that.currentBalance = result.last_balance;
+            console.log(that.currentBalance);
+            that.pocketMoney = result.pocket_money;
+            app.$forceUpdate();
+
           }
         });
       },
@@ -107,24 +117,28 @@ document.addEventListener("DOMContentLoaded", function(event) {
         } else {
           currentAmount = amount;
         }
-        var params = {amount: currentAmount, tag_id: tagID, user_id: that.account.user_id, date: new Date(), impact: impact};
+        var params = {amount: currentAmount, tag_id: tagID, user_id: that.userId, date: new Date(), impact: impact};
         $.post('/api/v1/expenses', params, function(result) {
           that.newExpense = result;
           that.account = result.account;
           that.pocketMoney += parseInt(currentAmount);
           that.currentBalance += parseInt(currentAmount);
-          that.newExpAmount = null;
+          that.newExpAmount = 0;
+          that.tagID = 0;
+          that.newExpAmount = 0;
           that.expenses.push(that.newExpense);
-        }.bind(this));
+        });
       },
       addNewTag: function(description) {
-        var params = {description: description, user_id: this.userId };
-        $.post('/api/v1/tags', params, function(result) {
-          this.tags.push(result);
-          this.tagAccount = result.account;
-        }.bind(this));
-        this.newTagDescription = null;
-        console.log(this.tags);
+        if (this.newTagDescription !== "") {
+          var params = {description: description, user_id: this.userId };
+          $.post('/api/v1/tags', params, function(result) {
+            this.tags.push(result);
+            this.tagAccount = result.account;
+          }.bind(this));
+          this.newTagDescription = null;
+          console.log(this.tags);
+        }
       },
       newTag: function() {
         this.newTagForm = !this.newTagForm;
@@ -161,6 +175,17 @@ document.addEventListener("DOMContentLoaded", function(event) {
           }
         });
       },
+      unHideExpenseForm: function() {
+        this.hideExpenseForm = !this.hideExpenseForm;
+      },
+      unHideAccountForm: function() {
+        this.accountUpdateForm = !this.accountUpdateForm;
+      },
+      // numberToCurrency: function(number) {
+      //   var moneyNumber = number.toFixed(2);
+      //   moneyNumber = JSON.stringify(moneyNumber).replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace('"', '').replace('"', '');
+      //   return moneyNumber;
+      // }
     }
   });
 });

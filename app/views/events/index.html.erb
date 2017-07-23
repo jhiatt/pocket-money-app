@@ -11,7 +11,7 @@
     <div class="description">
       <%= event.description %>
     </div>
-    <%= link_to "closer look", "/events/#{event.id}", date: date %>
+    <%= link_to "closer look", "/events/#{event.id}?date=#{date}" %>
     <hr>
   <% end %>
   <% Event.find_weekly_events(date, current_user).each do |event| %>
@@ -20,7 +20,7 @@
     <div class="description">
      <%= event.description %>
     </div>
-    <a href="/events/<%= event.id %>">closer look</a>
+    <%= link_to "closer look", "/events/#{event.id}?date=#{date}" %>
     <hr>
   <% end %>
 
