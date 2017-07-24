@@ -21,7 +21,9 @@ class Account < ApplicationRecord
     # event_array = self.find_events(balance_update_time, pocket_period)
 
     #obtain an array of all the dates
-    array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
+    # array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
+    today = Time.now.to_date
+    array_of_dates = (today..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
     array_of_dates.each do |date|
       #get the value of each day individually
       x = Expense.where(id: expense_array.map{ |expense| expense[:id] }, date: date)
@@ -40,6 +42,7 @@ class Account < ApplicationRecord
       if bucket < 0
         reserve_amount -= bucket
         #  
+        binding.pry
         bucket = 0
       end
     end
@@ -52,14 +55,12 @@ class Account < ApplicationRecord
 
     expense_array.each do |expense|
       if expense.date > balance_update_time && expense.date < Time.now
-        recente_amounts += expense.amount
+        recent_amounts += expense.amount
       end
     end
 
-
-
     current_balance = last_balance - recent_amounts
-    new_pocket_money = current_balance - reserve_amount
+    new_pocket_money = current_balance - reserve_amount - bucket
 
     update(pocket_money: new_pocket_money)
      
@@ -168,8 +169,6 @@ class Account < ApplicationRecord
     end
     event_array.flatten
   end
-
-
 
   private
 

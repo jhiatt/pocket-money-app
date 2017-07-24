@@ -19,9 +19,9 @@
     </select>
     <% unless edit %>
       <div>Monthly or weekly?
-      <select name="frequency" onchange="weeklyForm(this.value)"></div>
-        <option value="monthly">Monthly</option>
-        <option value="weekly">Weekly</option>
+      <select name="weekly" onchange="weeklyForm(this.value)"></div>
+        <option value="false">Monthly</option>
+        <option value="true">Weekly</option>
       </select>
       <!-- if monthly -->
         <div id="monthly" >

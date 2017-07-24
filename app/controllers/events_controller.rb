@@ -15,12 +15,14 @@ class EventsController < ApplicationController
   end
 
   def create
-    if params[:impact] = "in"
-      amount = params[:amount].to_d.abs
-    elsif params[:impact] = "out"
-      amount = params[:amount].to_d.abs * -1
+    if params[:impact] == "in" 
+      # && params[:amount].to_i < 0
+      amount = -params[:amount]
+    elsif params[:impact] == "out"
+      # && params[:amount].to_i < 0
+      amount = params[:amount].to_f * -1
     end
-      @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact])
+      @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact], weekly: params[:weekly])
       @event.save 
     if @event.repeat && params[:frequency] = "monthly"
       occ_time = occurances(params[:date1])
@@ -159,6 +161,12 @@ class EventsController < ApplicationController
 
   def update_pocket
     current_user.account.pocket_money_update
+  end
+
+  #delete me
+  def hidden
+    current_user.account.pocket_money_update
+    redirect_to "/events"
   end
 
   private
