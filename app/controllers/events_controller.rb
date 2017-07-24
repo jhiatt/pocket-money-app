@@ -24,7 +24,7 @@ class EventsController < ApplicationController
     end
       @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact], weekly: params[:weekly])
       @event.save 
-    if @event.repeat && params[:frequency] = "monthly"
+    if @event.repeat && params[:weekly] == "false"
       occ_time = occurances(params[:date1])
       if params[:date2] != ""
         i = 0
@@ -55,7 +55,7 @@ class EventsController < ApplicationController
           i += 1    
         end  
       end
-    elsif @event.repeat && params[:frequency] = "weekly"
+    elsif @event.repeat && params[:weekly] == "true"
       #week number to start
       week_num = params[:start_date].to_datetime.strftime("%U").to_i
 

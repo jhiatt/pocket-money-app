@@ -41,8 +41,6 @@ class Account < ApplicationRecord
       #if the day brings us negative, add to the reserve amount 
       if bucket < 0
         reserve_amount -= bucket
-        #  
-        binding.pry
         bucket = 0
       end
     end
@@ -58,11 +56,11 @@ class Account < ApplicationRecord
         recent_amounts += expense.amount
       end
     end
-
     current_balance = last_balance - recent_amounts
     new_pocket_money = current_balance - reserve_amount - bucket
 
     update(pocket_money: new_pocket_money)
+
      
     return new_pocket_money
   end
@@ -165,9 +163,11 @@ class Account < ApplicationRecord
         
       else
         event_array << event.event_dates.where("date > ? AND date < ?", date1, date2)
+        # binding.pry
       end
     end
     event_array.flatten
+    # binding.pry
   end
 
   private
