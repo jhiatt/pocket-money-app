@@ -3,10 +3,96 @@
     <fieldset>
         <legend><%= heading %></legend>
         <div class="form-group">
-            <label for="inputEmail" class="col-md-2 control-label">Email</label>
+            <label for="inputEmail" class="col-md-2 control-label">Description</label>
 
             <div class="col-md-10">
-                <input type="email" class="form-control" id="inputEmail" placeholder="Email">
+                <input type="text" class="form-control" id="inputEmail" placeholder="Email" value="<%= @event.description %>" name="description">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="select222" class="col-md-2 control-label">Is this money you will receive or money you owe?</label>
+
+            <div class="col-md-10">
+                <select id="select222" multiple="" class="selectpicker form-control" name="impact">
+              <!--   id="impact" -->
+                    <option value="out">Will Pay</option>
+                    <option value="in">Will Receive</option>
+                </select>
+            </div>
+        </div>
+
+
+                                                <div>Will this repeat?
+                                                <select name="repeat" id="repeat"></div>
+                                                  <option value="True">Yes</option>
+                                                  <option value="False">No</option>
+                                                </select>
+                                                <% unless edit %>
+                                                  <div>Monthly or weekly?
+                                                  <select name="weekly" onchange="weeklyForm(this.value)"></div>
+                                                    <option value="false">Monthly</option>
+                                                    <option value="true">Weekly</option>
+                                                  </select>
+                                                  <!-- if monthly -->
+                                                    <div id="monthly" >
+                                                      monthly <div> <input type="date" name="date1"><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
+                                                      <div class="hidden">
+                                                        <input type="date" name="date2" >
+                                                        <div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div>
+                                                      </div>
+                                                      <div class="hidden"> <input type="date" name="date3" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
+                                                      <div class="hidden"> <input type="date" name="date4" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
+                                                      <div class="hidden"> <input type="date" name="date5" ></div>
+                                                    </div>
+                                                  <!-- if weekly -->
+                                                    <div id="weekly" class="hidden">Weekly:
+                                                      <div>Starting: <input type="date" name="start_date" value=<%= Time.now %>></div>
+                                                      <div>Sunday<input type="checkbox" name="sunday" value="true"></div>
+                                                      <div>Monday<input type="checkbox" name="monday" value="true"></div>
+                                                      <div>Tuesday<input type="checkbox" name="tuesday" value="true"></div>
+                                                      <div>Wednesday<input type="checkbox" name="wednesday" value="true"></div>
+                                                      <div>Thursday<input type="checkbox" name="thursday" value="true"></div>
+                                                      <div>Friday<input type="checkbox" name="friday" value="true"></div>
+                                                      <div>Saturday<input type="checkbox" name="saturday" value="true"></div>
+                                                    </div>
+                                                  <% end %>
+
+                                                <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
+
+                                                <div>Provide a category if you want:
+                                                 <select name="category" id="category"></div>
+                                                  <% @categories.each do |category| %>
+                                                    <option value="<%= category %>"><%= category %></option>
+                                                  <% end %>
+                                                  </select>
+                                                </div>
+
+                                                <div>Tag this expense as:
+                                                 <% if @tags%>
+                                                    <select name="tag" id="tag"></div>
+                                                      <option value="none">None</option>
+                                                      <% @tags.each do |tag| %>
+                                                        <option value="<%= tag.id %>"><%= tag.description %></option>
+                                                      <% end %>
+                                                    </select>
+                                                  <% else %>
+                                                  No Tags   
+                                                  <% end %>
+                                            <!--       <a href="/tags/new">New Tag</a>
+                                             -->    </div>
+
+                                                <div><input type="submit" value="<%= action %>"></div>
+                                              <% end %>
+                                            </div>
+                                            <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div class="togglebutton">
+                    <label>
+                        <input type="checkbox" checked="" name="repeat"> Toggle button
+                    </label>
+                </div>
             </div>
         </div>
         <div class="form-group">
@@ -29,15 +115,7 @@
                 </div>
             </div>
         </div>
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="togglebutton">
-                    <label>
-                        <input type="checkbox" checked=""> Toggle button
-                    </label>
-                </div>
-            </div>
-        </div>
+
         <div class="form-group">
             <label for="inputFile" class="col-md-2 control-label">File</label>
 
@@ -83,19 +161,7 @@
                         </select>
             </div>
         </div>
-        <div class="form-group">
-            <label for="select222" class="col-md-2 control-label">Select Multiple</label>
-
-            <div class="col-md-10">
-                <select id="select222" multiple="" class="selectpicker form-control">
-                    <option>Ea nam qui vel consequatur</option>
-                    <option>Dolorem perspiciatis adipisci </option>
-                    <option>Aperiam, debitis deleniti</option>
-                    <option>Accusamus non qui amet eum</option>
-                    <option>Doloremque commodi impedit</option>
-                </select>
-            </div>
-        </div>
+   
         <div class="form-group">
             <div class="col-md-10 col-md-offset-2">
                 <button type="submit" class="btn btn-raised btn-primary">Submit</button>
@@ -105,80 +171,4 @@
     </fieldset>
 </form>
 
-<!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
 
-
-
-
-  <!--   <div>Date: (Pleaase format Year, Month, Day)<input type="text" value="<%# @event %>" name="date" class="datepicker"></div>
-   -->  <!-- see type "date" -->
-    <div>Description:<input type="text" value="<%= @event.description %>" name="description"></div>
-
-    <div>Is this money you will receive or money you owe?
-      <select name="impact" id="impact"></div>
-        <option value="out">Will Pay</option>
-        <option value="in">Will Receive</option>
-      </select>
-
-    <div>Will this repeat?
-    <select name="repeat" id="repeat"></div>
-      <option value="True">Yes</option>
-      <option value="False">No</option>
-    </select>
-    <% unless edit %>
-      <div>Monthly or weekly?
-      <select name="weekly" onchange="weeklyForm(this.value)"></div>
-        <option value="false">Monthly</option>
-        <option value="true">Weekly</option>
-      </select>
-      <!-- if monthly -->
-        <div id="monthly" >
-          monthly <div> <input type="date" name="date1"><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
-          <div class="hidden">
-            <input type="date" name="date2" >
-            <div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div>
-          </div>
-          <div class="hidden"> <input type="date" name="date3" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
-          <div class="hidden"> <input type="date" name="date4" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
-          <div class="hidden"> <input type="date" name="date5" ></div>
-        </div>
-      <!-- if weekly -->
-        <div id="weekly" class="hidden">Weekly:
-          <div>Starting: <input type="date" name="start_date" value=<%= Time.now %>></div>
-          <div>Sunday<input type="checkbox" name="sunday" value="true"></div>
-          <div>Monday<input type="checkbox" name="monday" value="true"></div>
-          <div>Tuesday<input type="checkbox" name="tuesday" value="true"></div>
-          <div>Wednesday<input type="checkbox" name="wednesday" value="true"></div>
-          <div>Thursday<input type="checkbox" name="thursday" value="true"></div>
-          <div>Friday<input type="checkbox" name="friday" value="true"></div>
-          <div>Saturday<input type="checkbox" name="saturday" value="true"></div>
-        </div>
-      <% end %>
-
-    <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
-
-    <div>Provide a category if you want:
-     <select name="category" id="category"></div>
-      <% @categories.each do |category| %>
-        <option value="<%= category %>"><%= category %></option>
-      <% end %>
-      </select>
-    </div>
-
-    <div>Tag this expense as:
-     <% if @tags%>
-        <select name="tag" id="tag"></div>
-          <option value="none">None</option>
-          <% @tags.each do |tag| %>
-            <option value="<%= tag.id %>"><%= tag.description %></option>
-          <% end %>
-        </select>
-      <% else %>
-      No Tags   
-      <% end %>
-<!--       <a href="/tags/new">New Tag</a>
- -->    </div>
-
-    <div><input type="submit" value="<%= action %>"></div>
-  <% end %>
-</div>

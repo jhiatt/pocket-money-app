@@ -12,21 +12,36 @@ body {
 
 
 .pocket-money {
-    margin: auto;
-    width: 35%;
-    text-align: center;
-    border: 3px solid black;
-    padding: 10px;
+  margin: auto;
+  width: 35%;
+  text-align: center;
+  border: 3px solid black;
+  padding: 100px;
+  h1 {
+    font-color: blue;
   }
+}
+
+
+
+#expenses-list {
+  padding: 100px;
+}
 
   .progress, .card {
     margin: auto;
-    width: 95%;
+    width: 70%;
     text-align: center;
   }
 
   .card {
     margin-bottom: 20px;
+    height: 50%;
+    .expandable-form {
+      display: flex;
+      flex-direction: column;
+      min-height: 10vh;
+    }
   }
 
 .alert-error {
