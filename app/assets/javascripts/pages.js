@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
             that.currentBalance += parseInt(that.events[j].amount);
           }
           that.pmPercentage = that.pocketMoney / that.currentBalance;
-          that.pmPercentage = JSON.stringify(that.pmPercentage) + "%";
+          that.pmPercentage = JSON.stringify(that.pmPercentage * 100) + "%";
 
         }
         console.log(that.currentBalance);

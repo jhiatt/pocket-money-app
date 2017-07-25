@@ -31,12 +31,21 @@ class Account < ApplicationRecord
         # new_pocket_money += exp.amount
         bucket += exp.amount
       end
-      y = EventDate.where(event_id: event_array.map{ |event| event[:id] }, date: date)
+
+      y = EventDate.where(event_id: event_array.map{ |event| event[:event_id] }, date: date)
+      # binding.pry
       y.each do |object|
-          # new_pocket_money += object.event.amount
-          bucket += object.event.amount
+        # new_pocket_money += object.event.amount
+        bucket += object.event.amount
+        # binding.pry
       end
-        ##(if I do incorporate event_weeks I have to add something for that here)
+
+      this_day = WeekToDate::GetWeek.week(date.to_s)
+      z = EventWeekly.where(event_id: event_array.map{ |event| event[:event_id] }, week_number: this_day[1], year: this_day[0], this_day[2].downcase => true)
+      z.each do |object|
+        bucket += object.event.amount
+      end
+        # binding.pry
 
       #if the day brings us negative, add to the reserve amount 
       if bucket < 0
@@ -48,14 +57,17 @@ class Account < ApplicationRecord
     event_array.each do |event|
       if event.date > balance_update_time && event.date < Time.now
         recent_amounts += event.event.amount
+        # binding.pry
       end
     end
 
     expense_array.each do |expense|
       if expense.date > balance_update_time && expense.date < Time.now
         recent_amounts += expense.amount
+        # binding.pry
       end
     end
+    # binding.pry
     current_balance = last_balance - recent_amounts
     new_pocket_money = current_balance - reserve_amount - bucket
 
