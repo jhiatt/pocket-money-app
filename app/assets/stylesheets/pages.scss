@@ -2,7 +2,7 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
 body {
-  background: #BDBDBD;
+  background: #009688;
 }
 
 
@@ -25,22 +25,33 @@ body {
 
 
 #expenses-list {
-  padding: 100px;
+  width: 100%;
+  // margin: auto;
+  padding: 30px;
+  // background-color: ;
 }
 
+#expense-list-background {
+  background: #FEFEFE;
+  width: 100%;
+}
   .progress, .card {
     margin: auto;
     width: 70%;
     text-align: center;
+    .progress-bar-success {
+      background-color: #B1DEDA;
+    }
   }
 
   .card {
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     height: 50%;
+    padding-bottom: 25px;
     .expandable-form {
-      display: flex;
-      flex-direction: column;
-      min-height: 10vh;
+      // display: flex;
+      // flex-direction: column;
+      // min-height: 10vh;
     }
   }
 
