@@ -11,22 +11,22 @@
     </fieldset>
     <div>Expense or Income</div>
     <fieldset>
-      <select name="impact" id="impact" required>
+      <select class="selectpicker" name="impact" id="impact" required>
         <option value="out">Expense</option>
         <option value="in">Income</option>
       </select>
     </fieldset>
     <fieldset>
       <div>Will this repeat?</div>
-      <select name="repeat" id="repeat"  required>
-        <option value="True">Yes</option>
-        <option value="False">No</option>
+      <select class="selectpicker" name="repeat" id="repeat"  required>
+        <option value=true>Yes</option>
+        <option value=false>No</option>
       </select>
     </fieldset>
     <% unless edit %>
       <fieldset>
       <div>Monthly or weekly?</div>
-      <select name="weekly" onchange="weeklyForm(this.value)" required>
+      <select class="selectpicker" name="weekly" onchange="weeklyForm(this.value)" required>
         <option value="false">Monthly</option>
         <option value="true">Weekly</option>
       </select>
@@ -60,7 +60,7 @@
     </fieldset>
     <fieldset>
       <div>Provide a category if you want:</div>
-      <select name="category" id="category" tabindex="6" required>
+      <select class="selectpicker" name="category" id="category" tabindex="6"  required>
         <% @categories.each do |category| %>
         <option value="<%= category %>"><%= category %></option>
         <% end %>
@@ -69,7 +69,7 @@
   <fieldset>    
     <div>Tag this expense as:</div>
     <% if @tags%>
-      <select name="tag" id="tag" tabindex="4" required>
+      <select class="selectpicker" name="tag" id="tag" tabindex="4" required>
         <option value="none">None</option>
         <% @tags.each do |tag| %>
         <option value="<%= tag.id %>"><%= tag.description %></option>

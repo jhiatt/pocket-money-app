@@ -1,3 +1,5 @@
+<div class="pocket-money, top-card, card">
+      <div class="card-block">
 Your list of tags:
 <% @tags.each do |tag| %>
   <div>
@@ -5,3 +7,5 @@ Your list of tags:
     <%= link_to "delete tag", "/tags/#{tag.id}", method: :delete %>
   </div>
 <% end %>
+</div>
+</div>

@@ -15,86 +15,91 @@ class EventsController < ApplicationController
   end
 
   def create
-    if params[:impact] == "in" 
-      # && params[:amount].to_i < 0
-      amount = -params[:amount]
-    elsif params[:impact] == "out"
-      # && params[:amount].to_i < 0
-      amount = params[:amount].to_f * -1
-    end
-      @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact], weekly: params[:weekly])
-      @event.save 
-    if @event.repeat && params[:weekly] == "false"
-      occ_time = occurances(params[:date1])
-      if params[:date2] != ""
+    if params[:amount] == "" || params[:date1] == ""
+      flash[:success] = "Please enter a begining date and amount"
+      redirect_to "/events/new"
+    else
+      if params[:impact] == "in" 
+        # && params[:amount].to_i < 0
+        amount = -params[:amount]
+      elsif params[:impact] == "out"
+        # && params[:amount].to_i < 0
+        amount = params[:amount].to_f * -1
+      end
+        @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact], weekly: params[:weekly])
+        @event.save 
+      if @event.repeat && params[:weekly] == "false"
+        occ_time = occurances(params[:date1])
+        if params[:date2] != ""
+          i = 0
+          occ_time.times do
+             
+            EventDate.create(event_id: @event.id, date: (Date.parse(params[:date2]) + i.month))
+            i += 1      
+          end
+        end
+        if params[:date3] != ""
+          i = 0
+          occ_time.times do
+            EventDate.create(event_id: @event.id, date: (Date.parse(params[:date3]) + i.month))
+            i += 1 
+          end     
+        end
+        if params[:date4] != ""
         i = 0
-        occ_time.times do
-           
-          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date2]) + i.month))
-          i += 1      
+          occ_time.times do
+            EventDate.create(event_id: @event.id, date: (Date.parse(params[:date4]) + i.month))
+            i += 1      
+          end
         end
-      end
-      if params[:date3] != ""
+        if params[:date5] != ""
         i = 0
-        occ_time.times do
-          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date3]) + i.month))
-          i += 1 
-        end     
-      end
-      if params[:date4] != ""
-      i = 0
-        occ_time.times do
-          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date4]) + i.month))
-          i += 1      
+          occ_time.times do
+            EventDate.create(event_id: @event.id, date: (Date.parse(params[:date5]) + i.month))
+            i += 1    
+          end  
         end
-      end
-      if params[:date5] != ""
-      i = 0
-        occ_time.times do
-          EventDate.create(event_id: @event.id, date: (Date.parse(params[:date5]) + i.month))
-          i += 1    
-        end  
-      end
-    elsif @event.repeat && params[:weekly] == "true"
-      #week number to start
-      week_num = params[:start_date].to_datetime.strftime("%U").to_i
-      year_num = params[:start_date].to_datetime.strftime("%Y").to_i
-      
-      #the first event may start on a partial week so we will add that before the loop
-      first_week = EventWeekly.new(event_id: @event.id,
-                           week_number: week_num, 
-                           year: year_num,
-                           sunday: params[:sunday], 
-                           monday: params[:monday],
-                           tuesday: params[:tuesday],
-                           wednesday: params[:wednesday],
-                           thursday: params[:thursday],
-                           friday: params[:friday],
-                           saturday: params[:saturday])
-      first_week.partial_week_update(params[:start_date])
-      first_week.save
-      weekly_occurances = current_user.account.pocket_time * 2 / 7
-      #we loop through the full two periods even though the first week is done in order to round up
-      weekly_occurances.times do |i|
-        if (week_num + 1 + i) == 53
-          week_num = 0 - i
-          year_num += 1
-        end
-        EventWeekly.create(event_id: @event.id,
-                           week_number: week_num + 1 + i, 
-                           year: year_num,
-                           sunday: params[:sunday], 
-                           monday: params[:monday],
-                           tuesday: params[:tuesday],
-                           wednesday: params[:wednesday],
-                           thursday: params[:thursday],
-                           friday: params[:friday],
-                           saturday: params[:saturday])
+      elsif @event.repeat && params[:weekly] == "true"
+        #week number to start
+        week_num = params[:start_date].to_datetime.strftime("%U").to_i
+        year_num = params[:start_date].to_datetime.strftime("%Y").to_i
+        
+        #the first event may start on a partial week so we will add that before the loop
+        first_week = EventWeekly.new(event_id: @event.id,
+                             week_number: week_num, 
+                             year: year_num,
+                             sunday: params[:sunday], 
+                             monday: params[:monday],
+                             tuesday: params[:tuesday],
+                             wednesday: params[:wednesday],
+                             thursday: params[:thursday],
+                             friday: params[:friday],
+                             saturday: params[:saturday])
+        first_week.partial_week_update(params[:start_date])
+        first_week.save
+        weekly_occurances = current_user.account.pocket_time * 2 / 7
+        #we loop through the full two periods even though the first week is done in order to round up
+        weekly_occurances.times do |i|
+          if (week_num + 1 + i) == 53
+            week_num = 0 - i
+            year_num += 1
+          end
+          EventWeekly.create(event_id: @event.id,
+                             week_number: week_num + 1 + i, 
+                             year: year_num,
+                             sunday: params[:sunday], 
+                             monday: params[:monday],
+                             tuesday: params[:tuesday],
+                             wednesday: params[:wednesday],
+                             thursday: params[:thursday],
+                             friday: params[:friday],
+                             saturday: params[:saturday])
 
+        end
       end
+      current_user.account.pocket_money_update
+      redirect_to "/events/"
     end
-    current_user.account.pocket_money_update
-    redirect_to "/events/"
   end
 
   def show
@@ -135,7 +140,7 @@ class EventsController < ApplicationController
     event = Event.find_by(id: params[:id])
     event[:repeat] = false
     if params[:date1] == ""
-      flash[:error] = "Please enter a begining date"
+      flash[:success] = "Please enter a begining date"
       redirect_to "/events/#{event.id}/edit"
     else
       if params[:date2] != ""

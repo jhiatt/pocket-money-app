@@ -3,8 +3,8 @@
 // You can use Sass (SCSS) here: http://sass-lang.com/
 
 .calendar {
-  margin-left: 30px;
-  margin-right: 50px;
+  // margin-left: 30px;
+  // margin-right: 50px;
   background-color: white;
 }
 
@@ -39,12 +39,17 @@ hr {
 }
 
 .calendar-heading {
-  font-size: 20px;
+  font-size: 30px;
   background-color: white;
-  margin: 20px;
-  width: 35%;
+  margin: 20px 20px 5px 20px;
+  width: 100%;
   text-align: center;
-  padding: 10px;
+  padding: 20px 10px 10px 10px;
+  height: 70px;
+  
+}
+.month-name {
+  font-size: 50;
 }
 
 #edit-note {
@@ -52,3 +57,6 @@ hr {
   background-color: white;
 }
 
+.simple-calendar {
+  padding: 10px 200px 10px 100px;
+}

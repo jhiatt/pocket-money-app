@@ -11,18 +11,18 @@
       <%= event.description %>
     </div>
 <!--     <%= link_to "closer look", "/events/#{event.id}?date=#{date}" %>
- -->    <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3">
+ -->    <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal-<%= event.id %>">
       Closer Look
     </button>
     <hr>
 
 <!-- modal -->
-<div class="modal" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+<div class="modal" id="myModal-<%= event.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
     <div class="modal-dialog modal-sm animated zoomIn animated-3x" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="zmdi zmdi-close"></i></span></button>
-                <h3 class="modal-title" id="myModalLabel3"><%= event.description %></h3>
+                <h3 class="modal-title" id="myModalLabel-<%= event.id %>"><%= event.description %></h3>
             </div>
             <div class="modal-body">
               <div>Date: <%= date %></div>
@@ -55,19 +55,19 @@
     <div class="description">
      <%= event.description %>
     </div>
-    <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3">
+    <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal-<%= event.id %>">
       Closer Look
     </button>
 
     <hr>
 
 <!-- modal -->
-<div class="modal" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+<div class="modal" id="myModal-<%= event.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel-<%= event.id %>">
     <div class="modal-dialog modal-sm animated zoomIn animated-3x" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="zmdi zmdi-close"></i></span></button>
-                <h3 class="modal-title" id="myModalLabel3"><%= event.description %></h3>
+                <h3 class="modal-title" id="myModalLabel-<%= event.id %>"><%= event.description %></h3>
             </div>
             <div class="modal-body">
               <div>Date: <%= date %></div>
