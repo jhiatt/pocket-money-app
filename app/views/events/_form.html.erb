@@ -1,6 +1,9 @@
 <div class="form-container"> 
   <%= form_tag url, id: "contact", method: form_method  do %>
     <h3><%= heading %></h3>
+    <% if message %>
+      <h4><%= message %></h4>
+    <% end %>
     <h4>For reliable perdictable expenses and income and for planning ahead</h4>
     <div>Description</div>
     <fieldset>
@@ -41,13 +44,13 @@
       <!-- if weekly -->
       <div id="weekly" class="hidden">Weekly:
         <div>Starting: <input type="date" name="start_date" value=<%= Time.now %>></div>
-        <div>Sunday<input type="checkbox" name="sunday" value="true"></div>
-        <div>Monday<input type="checkbox" name="monday" value="true"></div>
-        <div>Tuesday<input type="checkbox" name="tuesday" value="true"></div>
-        <div>Wednesday<input type="checkbox" name="wednesday" value="true"></div>
-        <div>Thursday<input type="checkbox" name="thursday" value="true"></div>
-        <div>Friday<input type="checkbox" name="friday" value="true"></div>
-        <div>Saturday<input type="checkbox" name="saturday" value="true"></div>
+        <div><input type="checkbox" name="sunday" value="true"> Sunday</div>
+        <div><input type="checkbox" name="monday" value="true"> Monday</div>
+        <div><input type="checkbox" name="tuesday" value="true"> Tuesday</div>
+        <div><input type="checkbox" name="wednesday" value="true"> Wednesday</div>
+        <div><input type="checkbox" name="thursday" value="true"> Thursday</div>
+        <div><input type="checkbox" name="friday" value="true"> Friday</div>
+        <div><input type="checkbox" name="saturday" value="true"> Saturday</div>
       </div>
       </fieldset>
     <% end %>

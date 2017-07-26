@@ -15,4 +15,5 @@
 //= require jquery-ui
 //= require vue
 //= require moment
+//= numeral
 //= require_tree .

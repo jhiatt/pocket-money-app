@@ -94,7 +94,7 @@ class EventsController < ApplicationController
       end
     end
     current_user.account.pocket_money_update
-    redirect_to "/events/#{@event.id}"
+    redirect_to "/events/"
   end
 
   def show

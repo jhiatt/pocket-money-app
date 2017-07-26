@@ -1,17 +1,33 @@
-Note: all changes will be made to all occurances of this event, except for "amount" which will impact all future occurances of this event.  Event dates cannot be chaged.
+<!-- <div id="edit-note">
+  Note: all changes will be made to all occurances of this event, except for "amount" which will impact all future occurances of this event.  Event dates cannot be chaged.
+</div> -->
 
-<%= render "form", form_method: :patch, url: "/events/#{@event.id}", heading: "Edit this scheduled payment:", action: "Save Changes", edit: true %>
+<div class="row">
+  <div class="col-md-6">
 
-<br>
-<div>Do you want to delete this event?
-Select a date range for which instances of this event you would like to delete.  If you want to delete all future instances leave the second feild blank.
+<%= render "form", form_method: :patch, message: 'Note: all changes will be made to all occurances of this event, except for "amount" which will impact all future occurances of this event.  Event dates cannot be chaged.', url: "/events/#{@event.id}", heading: "Edit this scheduled payment:", action: "Save Changes", edit: true %>
+  </div>
 
-  <%= form_tag "/events/#{@event.id}", method: :delete do %>
+  <div class="col-md-6">
+<div class="form-container"> 
+  <%= form_tag "/events/#{@event.id}", id: "contact", method: :delete do %>
+    <h3>Delete This Event</h3>
+    <h4>Select a date range of this event you would like to delete. If you want to delete all future instances leave the second feild blank.</h4>
+    <div>From this day (this day will be deleted):</div>
+    <fieldset>
+      <input type="date" tabindex="1" name="date1" required autofocus>
+    </fieldset>
+    <div>To this day (not including this day):</div>
+    <fieldset>
+      <input type="date" tabindex="2" name="date2">
+    </fieldset>
 
-    <p>Select the first day you would like to delete:<input type="date" name="date1"></p>
-    <p>Select the first day you would like the event to start again: <input type="date" name="date2"></p>
+    <fieldset>
+      <button name="submit" type="submit" id="contact-submit" value="Delete">Submit</button>
+    </fieldset>
 
-    <input type="submit" value="Delete">
 
   <% end %>
+ </div>
+ </div>
  </div>

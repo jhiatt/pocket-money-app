@@ -3,9 +3,23 @@
 
 document.addEventListener("DOMContentLoaded", function(event) { 
 
-  Vue.filter('date', function (value) {
-
+  Vue.filter('date', function(value) {
     return moment(value).format('MM/DD/YYYY');
+  });
+
+  Vue.filter('money', function(value) {
+    var x = Number(value).toFixed(2);
+    var y = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (y < 0) {
+      y = y.slice(1);
+    //   y = "(" + y + ")";
+    // }
+      y = '-$' + y;
+    } else {
+      '$' + y;
+    }
+    return y;
+    // return numeral(value).format('0,0.0');
   });
 
   var app = new Vue({
@@ -30,7 +44,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       lastBalance: 0,
       currentBalance: 0,
       pocketTime: 0,
-      pmPercentage: "50%",
+      pmPercentage: "100%",
       userId: 0,
       hideExpenseForm: false,
       accountUpdateForm: false,

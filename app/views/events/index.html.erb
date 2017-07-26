@@ -1,5 +1,5 @@
 <%= month_calendar(attribute: :starts_at) do |date| %>
-  <div class="date">
+<div class="date">
     <%= date.strftime("%e") %>
   </div>
   
@@ -10,18 +10,97 @@
     <div class="description">
       <%= event.description %>
     </div>
-    <%= link_to "closer look", "/events/#{event.id}?date=#{date}" %>
+<!--     <%= link_to "closer look", "/events/#{event.id}?date=#{date}" %>
+ -->    <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3">
+      Closer Look
+    </button>
     <hr>
+
+<!-- modal -->
+<div class="modal" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+    <div class="modal-dialog modal-sm animated zoomIn animated-3x" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="zmdi zmdi-close"></i></span></button>
+                <h3 class="modal-title" id="myModalLabel3"><%= event.description %></h3>
+            </div>
+            <div class="modal-body">
+              <div>Date: <%= date %></div>
+              <div><% if event.repeat = true %>
+                    Recurring expense
+                  <% else %>
+                    One-time expense
+                  <% end %>
+              </div>
+              <div>Amount: <%= number_to_currency(event.amount) %></div>
+              <div>Category: <%= event.category %></div>
+              <% if event.tag_id %>
+                <div>Tag: <%= event.tag.description %></div>
+              <% end %>
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="/events/<%= event.id %>/edit">EDIT</a>  
+            </div>
+        </div>
+    </div>
+</div>
+
   <% end %>
+
   <% Event.find_weekly_events(date, current_user).each do |event| %>
     <%= number_to_currency(event.amount) %>
     <br>
     <div class="description">
      <%= event.description %>
     </div>
-    <%= link_to "closer look", "/events/#{event.id}?date=#{date}" %>
+    <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3">
+      Closer Look
+    </button>
+
     <hr>
+
+<!-- modal -->
+<div class="modal" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel3">
+    <div class="modal-dialog modal-sm animated zoomIn animated-3x" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"><i class="zmdi zmdi-close"></i></span></button>
+                <h3 class="modal-title" id="myModalLabel3"><%= event.description %></h3>
+            </div>
+            <div class="modal-body">
+              <div>Date: <%= date %></div>
+              <div><% if event.repeat = true %>
+                    Recurring expense
+                  <% else %>
+                    One-time expense
+                  <% end %>
+              </div>
+              <div>Amount: <%= number_to_currency(event.amount) %></div>
+              <div>Category: <%= event.category %></div>
+              <% if event.tag_id %>
+                <div>Tag: <%= event.tag.description %></div>
+              <% end %>
+              
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="/events/<%= event.id %>/edit">EDIT</a>  
+            </div>
+        </div>
+    </div>
+</div>
+
+
   <% end %>
 
 <% end %>
+
+<!-- closer look -->
+
+
+
+
+
 

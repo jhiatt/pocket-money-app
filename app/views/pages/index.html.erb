@@ -11,13 +11,13 @@
   <div class="pocket-money, top-card, card">
       <div class="card-block">
         <h1> 
-          Pocket Money: {{ '$' + Number(pocketMoney).toFixed(2) }}
+          Pocket Money: {{ pocketMoney | money }}
   <!--         <span class="counter">5,454</span>
    -->      </h1>
       </div>
       <div>
         <h3>
-          Current Balance: {{currentBalance}}
+          Current Balance: {{currentBalance | money}}
         </h3>
       </div>
   </div>
@@ -115,7 +115,7 @@
                 <tbody>
                   <tr v-for="expense in sortedExpenses">
                     <td>{{expense.date | date}} </td>
-                    <td>{{expense.amount}} </td>
+                    <td>{{expense.amount | money}} </td>
                     <td>{{expense.tag_description}} </td>
                     <td><button v-on:click="deleteExpense(expense.id, expense.amount)">delete</button></td>
                   </tr>
