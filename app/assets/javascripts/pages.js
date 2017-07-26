@@ -22,6 +22,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // return numeral(value).format('0,0.0');
   });
 
+  Vue.filter('bigmoney', function(value) {
+    var x = Number(value);
+    var y = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    if (y < 0) {
+      y = y.slice(1);
+    //   y = "(" + y + ")";
+    // }
+      y = '-$' + y;
+    } else {
+      '$' + y;
+    }
+    return y;
+    // return numeral(value).format('0,0.0');
+  });
+
   var app = new Vue({
     el: '#app',
     data: {

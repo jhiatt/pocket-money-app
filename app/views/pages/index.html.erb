@@ -11,13 +11,13 @@
   <div class="pocket-money, top-card, card">
       <div class="card-block">
         <h1> 
-          Pocket Money: {{ pocketMoney | money }}
+          Pocket Money: {{ pocketMoney | bigmoney }}
   <!--         <span class="counter">5,454</span>
    -->      </h1>
       </div>
       <div>
         <h3>
-          Current Balance: {{currentBalance | money}}
+          Current Balance: {{currentBalance | bigmoney}}
         </h3>
       </div>
   </div>
@@ -110,6 +110,7 @@
                     <th>Date</th>
                     <th>Amount</th>
                     <th>Tag</th>
+                    <th>Delete</th>
                   </tr>
                 </thead>
                 <tbody>

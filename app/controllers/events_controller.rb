@@ -15,7 +15,7 @@ class EventsController < ApplicationController
   end
 
   def create
-    if params[:amount] == "" || params[:date1] == ""
+    if params[:amount] == "" || (params[:start_date] ? (params[:start_date] == "") : (params[:date1] == ""))
       flash[:success] = "Please enter a begining date and amount"
       redirect_to "/events/new"
     else
