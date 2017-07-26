@@ -1,5 +1,5 @@
-<div class="container"> 
-  <%= form_tag url, id: "contact", method: form_method do %>
+<div class="form-container"> 
+  <%= form_tag url, id: "contact", method: form_method  do %>
     <h3><%= heading %></h3>
     <h4>For reliable perdictable expenses and income and for planning ahead</h4>
     <div>Description</div>
@@ -8,7 +8,7 @@
     </fieldset>
     <div>Expense or Income</div>
     <fieldset>
-      <select name="impact" id="impact" required></div>
+      <select name="impact" id="impact" required>
         <option value="out">Expense</option>
         <option value="in">Income</option>
       </select>
@@ -53,7 +53,7 @@
     <% end %>
     <fieldset>
       <div>How much?</div>
-      <input type="text" value="<%= @event.amount %>" name="amount" tabindex="2" required></div>
+      <input type="text" value="<%= @event.amount %>" name="amount" tabindex="2" required>
     </fieldset>
     <fieldset>
       <div>Provide a category if you want:</div>
@@ -62,20 +62,18 @@
         <option value="<%= category %>"><%= category %></option>
         <% end %>
       </select>
-    </div>
-    <input type="text" value="<%= @event.amount %>" name="amount" tabindex="3" required></div>
   </fieldset>    
   <fieldset>    
     <div>Tag this expense as:</div>
     <% if @tags%>
-    <select name="tag" id="tag" tabindex="4" required>
-      <option value="none">None</option>
-      <% @tags.each do |tag| %>
-      <option value="<%= tag.id %>"><%= tag.description %></option>
-      <% end %>
-    </select>
+      <select name="tag" id="tag" tabindex="4" required>
+        <option value="none">None</option>
+        <% @tags.each do |tag| %>
+        <option value="<%= tag.id %>"><%= tag.description %></option>
+        <% end %>
+      </select>
     <% else %>
-    No Tags   
+      No Tags   
     <% end %>
   </fieldset>
   <fieldset>
@@ -86,183 +84,6 @@
   <% end %>
 </div>
 
-                                                <div><input type="submit" value="<%= action %>"></div>
 
-
-
-
-
-
-<form class="form-horizontal">
-    <fieldset>
-        <legend><%= heading %></legend>
-        <div class="form-group">
-            <label for="inputEmail" class="col-md-2 control-label">Description</label>
-
-            <div class="col-md-10">
-                <input type="text" class="form-control" id="inputEmail" placeholder="Email" value="<%= @event.description %>" name="description">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="select222" class="col-md-2 control-label">Is this money you will receive or money you owe?</label>
-
-            <div class="col-md-10">
-                <select id="select222" multiple="" class="selectpicker form-control" name="impact">
-              <!--   id="impact" -->
-                    <option value="out">Will Pay</option>
-                    <option value="in">Will Receive</option>
-                </select>
-            </div>
-        </div>
-
-
-                                                <div>Will this repeat?
-                                                <select name="repeat" id="repeat"></div>
-                                                  <option value="True">Yes</option>
-                                                  <option value="False">No</option>
-                                                </select>
-                                                <% unless edit %>
-                                                  <div>Monthly or weekly?
-                                                  <select name="weekly" onchange="weeklyForm(this.value)"></div>
-                                                    <option value="false">Monthly</option>
-                                                    <option value="true">Weekly</option>
-                                                  </select>
-                                                  <!-- if monthly -->
-                                                    <div id="monthly" >
-                                                      monthly <div> <input type="date" name="date1"><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
-                                                      <div class="hidden">
-                                                        <input type="date" name="date2" >
-                                                        <div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div>
-                                                      </div>
-                                                      <div class="hidden"> <input type="date" name="date3" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
-                                                      <div class="hidden"> <input type="date" name="date4" ><div class="btn btn-primary" onclick="addDateForm(this)">Add additional date</div> </div>
-                                                      <div class="hidden"> <input type="date" name="date5" ></div>
-                                                    </div>
-                                                  <!-- if weekly -->
-                                                    <div id="weekly" class="hidden">Weekly:
-                                                      <div>Starting: <input type="date" name="start_date" value=<%= Time.now %>></div>
-                                                      <div>Sunday<input type="checkbox" name="sunday" value="true"></div>
-                                                      <div>Monday<input type="checkbox" name="monday" value="true"></div>
-                                                      <div>Tuesday<input type="checkbox" name="tuesday" value="true"></div>
-                                                      <div>Wednesday<input type="checkbox" name="wednesday" value="true"></div>
-                                                      <div>Thursday<input type="checkbox" name="thursday" value="true"></div>
-                                                      <div>Friday<input type="checkbox" name="friday" value="true"></div>
-                                                      <div>Saturday<input type="checkbox" name="saturday" value="true"></div>
-                                                    </div>
-                                                  <% end %>
-
-                                                <div>How much?<input type="text" value="<%= @event.amount %>" name="amount"></div>
-
-                                                <div>Provide a category if you want:
-                                                 <select name="category" id="category"></div>
-                                                  <% @categories.each do |category| %>
-                                                    <option value="<%= category %>"><%= category %></option>
-                                                  <% end %>
-                                                  </select>
-                                                </div>
-
-                                                <div>Tag this expense as:
-                                                 <% if @tags%>
-                                                    <select name="tag" id="tag"></div>
-                                                      <option value="none">None</option>
-                                                      <% @tags.each do |tag| %>
-                                                        <option value="<%= tag.id %>"><%= tag.description %></option>
-                                                      <% end %>
-                                                    </select>
-                                                  <% else %>
-                                                  No Tags   
-                                                  <% end %>
-                                            <!--       <a href="/tags/new">New Tag</a>
-                                             -->    </div>
-
-                                                <div><input type="submit" value="<%= action %>"></div>
-                                           
-                                            </div>
-                                            <!-- $$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$ -->
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <div class="togglebutton">
-                    <label>
-                        <input type="checkbox" checked="" name="repeat"> Toggle button
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="inputPassword" class="col-md-2 control-label">Password</label>
-
-            <div class="col-md-10">
-                <input type="password" class="form-control" id="inputPassword" placeholder="Password">
-            </div>
-        </div>
-        <div class="form-group" style="margin-top: 0;">
-            <!-- inline style is just to demo custom css to put checkbox below input above -->
-            <div class="col-md-offset-2 col-md-10">
-                <div class="checkbox">
-                    <label>
-                        <input type="checkbox"> Checkbox
-                    </label>
-                    <label>
-                        <input type="checkbox" disabled=""> Disabled Checkbox
-                    </label>
-                </div>
-            </div>
-        </div>
-
-        <div class="form-group">
-            <label for="inputFile" class="col-md-2 control-label">File</label>
-
-            <div class="col-md-10">
-                <input type="text" readonly="" class="form-control" placeholder="Browse...">
-                <input type="file" id="inputFile" multiple="">
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="textArea" class="col-md-2 control-label">Textarea</label>
-
-            <div class="col-md-10">
-                <textarea class="form-control" rows="3" id="textArea"></textarea>
-                <span class="help-block">A longer block of help text that breaks onto a new line and may extend beyond one line.</span>
-            </div>
-        </div>
-        <div class="form-group">
-            <label class="col-md-2 control-label">Radios</label>
-
-            <div class="col-md-10">
-                <div class="radio radio-primary">
-                    <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked=""> Option one is this
-                    </label>
-                </div>
-                <div class="radio radio-primary">
-                    <label>
-                        <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2"> Option two can be something else
-                    </label>
-                </div>
-            </div>
-        </div>
-        <div class="form-group">
-            <label for="select111" class="col-md-2 control-label">Select</label>
-
-            <div class="col-md-10">
-                <select id="select111" class="form-control selectpicker">
-                    <option>Ea nam qui vel consequatur</option>
-                    <option>Dolorem perspiciatis adipisci </option>
-                    <option>Aperiam, debitis deleniti</option>
-                    <option>Accusamus non qui amet eum</option>
-                    <option>Doloremque commodi impedit</option>
-                        </select>
-            </div>
-        </div>
-   
-        <div class="form-group">
-            <div class="col-md-10 col-md-offset-2">
-                <button type="submit" class="btn btn-raised btn-primary">Submit</button>
-                <button type="button" class="btn btn-danger">Cancel</button>
-            </div>
-        </div>
-    </fieldset>
-</form>
 
 

@@ -114,7 +114,7 @@
                 </thead>
                 <tbody>
                   <tr v-for="expense in sortedExpenses">
-                    <td>{{expense.date}} </td>
+                    <td>{{expense.date | date}} </td>
                     <td>{{expense.amount}} </td>
                     <td>{{expense.tag_description}} </td>
                     <td><button v-on:click="deleteExpense(expense.id, expense.amount)">delete</button></td>

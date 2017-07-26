@@ -2,6 +2,12 @@
 /* global $ */
 
 document.addEventListener("DOMContentLoaded", function(event) { 
+
+  Vue.filter('date', function (value) {
+
+    return moment(value).format('MM/DD/YYYY');
+  });
+
   var app = new Vue({
     el: '#app',
     data: {
@@ -180,6 +186,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       unHideAccountForm: function() {
         this.accountUpdateForm = !this.accountUpdateForm;
       },
+
       // numberToCurrency: function(number) {
       //   var moneyNumber = number.toFixed(2);
       //   moneyNumber = JSON.stringify(moneyNumber).replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace('"', '').replace('"', '');
