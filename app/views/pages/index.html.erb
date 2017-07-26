@@ -2,77 +2,99 @@
 <div id="app">
 
 
-<!-- Amount available -->
-<div class="progress">
-  <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5000" aria-valuemin="0" aria-valuemax="6000" v-bind:style="{width: pmPercentage}">
-      <span class="sr-only">{{pmPercentage}} Complete (success)</span>
+  <!-- Amount available -->
+  <div class="progress">
+    <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="5000" aria-valuemin="0" aria-valuemax="6000" v-bind:style="{width: pmPercentage}">
+        <span class="sr-only">{{pmPercentage}} Complete (success)</span>
+    </div>
   </div>
-</div>
-<div class="pocket-money, top-card, card">
+  <div class="pocket-money, top-card, card">
+      <div class="card-block">
+        <h1> 
+          Pocket Money: {{ '$' + Number(pocketMoney).toFixed(2) }}
+  <!--         <span class="counter">5,454</span>
+   -->      </h1>
+      </div>
+      <div>
+        <h3>
+          Current Balance: {{currentBalance}}
+        </h3>
+      </div>
+  </div>
+
+  <div class="pocket-money, top-card, card">
     <div class="card-block">
-      <h1> 
-        Pocket Money: {{ '$' + Number(pocketMoney).toFixed(2) }}
-<!--         <span class="counter">5,454</span>
- -->      </h1>
-    </div>
-    <div>
-      <h3>
-        Current Balance: {{currentBalance}}
-      </h3>
-    </div>
-</div>
 
-<div class="pocket-money, top-card, card">
-    <div class="card-block">
-
-<h2>Actions</h2>
-
+      <h2>Actions</h2>
 
     <!-- Add an expense -->
-
+<div class="row">
+  <div class="col-md-6">
+    
       <button v-on:click="unHideExpenseForm()" class="btn btn-default btn-raised">Add Expense</button>
+
       <div v-if="hideExpenseForm">
-        <div>Amount<input type="text" v-model="newExpAmount" name="amount"></div>
-        <div v-if="tags.length !== 0">Tag (optional):
-          <select v-model="tagID">
-              <option v-for="tag in tags" v-bind:value="tag.id">{{tag.description}}</option>
-          </select>
+        <div class="form-container">  
+          <form id="contact" data-remote="true">
+            <h3>Spend Some Money? Get Some Money?</h3>
+            <h4>Add your activity below</h4>
+            <fieldset>
+              <input type="text" v-model="newExpAmount" name="amount" placeholder="Amount" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset v-if="tags.length !== 0">Tag (optional):
+              <select v-model="tagID">
+                  <option v-for="tag in tags" v-bind:value="tag.id">{{tag.description}}</option>
+              </select>
+              <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3" v-on:click="newTag()">Create a New Tag</button>
+            </fieldset>
+            <fieldset>
+              <div>Did you pay money or did you receive money?</div>
+              <select v-model="newExpImpact">
+                <option value="out">Paid</option>
+                <option value="In">Received</option>
+              </select>
+            </fieldset>
+            <fieldset>
+              <button id="contact" type="submit" v-on:click="addExpense(newExpAmount, tagID, newExpImpact)">Submit</button>
+            </fieldset>
+          </form>
         </div>
-      <!-- TAG -->
-    <div class="action">
-        <div>
-          <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3" v-on:click="newTag()">Create a New Tag</button>
-<!--           <div v-if="newTagForm">
-            Tag Name:<input type="text" v-model=newTagDescription>
-            <button class="btn btn-default btn-raised" v-on:click="addNewTag(newTagDescription)">Add</button>
-          </div> -->
-        </div>
-        <div>Coming in or going out?</div>
-          <select v-model="newExpImpact">
-            <option value="In">Received</option>
-            <option value="out">Paid</option>
-          </select>
-        <button class="btn btn-default btn-raised" v-on:click="addExpense(newExpAmount, tagID, newExpImpact)">Submit</button>
       </div>
 
-    </div>
-
+  </div>
       <!-- Update Bank Balance -->
 
-        <button class="btn btn-default btn-raised" v-on:click="unHideAccountForm()">Update Bank Balance</button>
-        <div v-if="accountUpdateForm">Update your current Bank Balance<input type="text" v-model="lastBalance">
-          <div>Do you need to calculate pocket money for more than the next 30 days?  Select a period.
-            <select v-model="pocketTime">
-              <option value="30">30 days</option>
-              <option value="60">60 days</option>
-              <option value="90">90 days</option>
-            </select>
-          </div>
-          <button class="btn btn-default btn-raised" v-on:click="updateAccount()">Update</button>
+  <div class="col-md-6">
+      <button class="btn btn-default btn-raised" v-on:click="unHideAccountForm()">Update Bank Balance</button>
+      <div v-if="accountUpdateForm">
+        <div class="form-container">  
+          <form id="contact" data-remote="true">
+            <h3>Miss Some Expenses?</h3>
+            <h4>Don't add them just update your current bank balance</h4>
+            <fieldset>
+              <input type="text" v-model="lastBalance" placeholder="Current Bank Balance" tabindex="1" required autofocus>
+            </fieldset>
+            <fieldset>Do you need to calculate pocket money for more than the next 30 days?  Select a period.
+                <select v-model="pocketTime">
+                  <option value="30">30 days</option>
+                  <option value="60">60 days</option>
+                  <option value="90">90 days</option>
+                </select>
+            </fieldset>
+            <fieldset>
+              <button id="contact" type="submit" v-on:click="updateAccount()">Update</button>
+            </fieldset>
+          </form>
         </div>
       </div>
 
+  </div>
+</div>
+      </div>
+
     </div>
+
+
     <!-- expense list -->
     <div id="expense-list-background">
         <div id="expenses-list">

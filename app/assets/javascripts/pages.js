@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       // for api
       amount: 0,
       newExpense: {},
-      newExpAmount: 0,
+      newExpAmount: null,
       newExpImpact: "Out",
       editExpense: 0,
       newTagForm: false,
@@ -123,9 +123,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
           that.account = result.account;
           that.pocketMoney += parseInt(currentAmount);
           that.currentBalance += parseInt(currentAmount);
-          that.newExpAmount = 0;
           that.tagID = 0;
-          that.newExpAmount = 0;
+          that.newExpAmount = null;
           that.expenses.push(that.newExpense);
         });
       },
