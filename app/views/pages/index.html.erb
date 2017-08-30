@@ -45,8 +45,8 @@
               <select v-model="tagID" >
                   <option v-for="tag in tags" v-bind:value="tag.id">{{tag.description}}</option>
               </select>
-              <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3" v-on:click="newTag()">Create a New Tag</button>
             </fieldset>
+              <button type="button" class="btn btn-default btn-raised" data-toggle="modal" data-target="#myModal3" v-on:click="newTag()">Create a New Tag</button>
             <fieldset>
               <div>Did you pay money or did you receive money?</div>
               <select v-model="newExpImpact" >

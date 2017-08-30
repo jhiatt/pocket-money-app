@@ -12,14 +12,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var y = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     if (y < 0) {
       y = y.slice(1);
-    //   y = "(" + y + ")";
-    // }
       y = '-$' + y;
     } else {
       '$' + y;
     }
     return y;
-    // return numeral(value).format('0,0.0');
   });
 
   Vue.filter('bigmoney', function(value) {
@@ -27,14 +24,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var y = x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
     if (y < 0) {
       y = y.slice(1);
-    //   y = "(" + y + ")";
-    // }
       y = '-$' + y;
     } else {
       '$' + y;
     }
     return y;
-    // return numeral(value).format('0,0.0');
   });
 
   var app = new Vue({
@@ -135,7 +129,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
           success: function(result) {
             console.log('I am the updated balance object');
             console.log(result);
-            //that.account = result;
             console.log("I'm the currentBalance after the update");
             that.currentBalance = result.last_balance;
             console.log(that.currentBalance);
@@ -215,12 +208,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
       unHideAccountForm: function() {
         this.accountUpdateForm = !this.accountUpdateForm;
       },
-
-      // numberToCurrency: function(number) {
-      //   var moneyNumber = number.toFixed(2);
-      //   moneyNumber = JSON.stringify(moneyNumber).replace(/\B(?=(\d{3})+(?!\d))/g, ",").replace('"', '').replace('"', '');
-      //   return moneyNumber;
-      // }
     }
   });
 });
