@@ -56,6 +56,7 @@ Rails.application.routes.draw do
 
       get "/users/:id/events", to: 'events#index'
       
+      resources :api_users, only: [:new, :create]
 
     end
   end
