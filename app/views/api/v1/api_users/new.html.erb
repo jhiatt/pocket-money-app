@@ -1,0 +1,12 @@
+<div class="form-container"> 
+  <%= form_tag "/api/v1/api_users/", id: "contact", method: :post  do %>
+    <h3>Want to make an API key?</h3>
+    <div>Go ahead, just submit your email and we will send it over.</div>
+    <fieldset>
+      <input type="text" tabindex="1" name="email" placeholder="Enter Email" required autofocus>
+    </fieldset>
+      <fieldset>
+    <button name="submit" type="submit" id="contact-submit" value="Request API Key">Submit</button>
+  </fieldset>
+  <% end %>
+</div>
