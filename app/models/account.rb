@@ -10,42 +10,30 @@ class Account < ApplicationRecord
 
   def pocket_money_update
     check_pocket_period
-    #used to calculate the reserved amount only
+    #bucket used to calculate the reserved amount only
     bucket = 0
     #reserve_amount is the amount I need to start with to make sure no individual day is negative (an overdraft)
     reserve_amount = 0
 
-    expense_array = self.find_expenses(balance_update_time, (balance_update_time + pocket_time.days))
-    event_array = self.find_events(balance_update_time, (balance_update_time + pocket_time.days))
-    # expense_array = self.find_expenses(balance_update_time, pocket_period)
-    # event_array = self.find_events(balance_update_time, pocket_period)
-
-    #obtain an array of all the dates
-    # array_of_dates = (balance_update_time.to_date..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
     today = Time.now.to_date
-    array_of_dates = (today..(balance_update_time + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
+
+    #pull all expenses and events for the next "pocket_time" days (defalut 30)
+    expense_array = self.find_expenses(balance_update_time, (today + pocket_time.days))
+    event_array = self.find_events(balance_update_time, (today + pocket_time.days))
+
+    #obtain an array of all the dates in calculation
+    array_of_dates = (today..(today + pocket_time.days).to_date).map{ |date| date.strftime("%Y-%m-%d") }
     array_of_dates.each do |date|
       #get the value of each day individually
       x = Expense.where(id: expense_array.map{ |expense| expense[:id] }, date: date)
       x.each do |exp|
-        # new_pocket_money += exp.amount
         bucket += exp.amount
       end
 
       y = EventDate.where(event_id: event_array.map{ |event| event[:event_id] }, date: date)
-      
       y.each do |object|
-        # new_pocket_money += object.event.amount
-        bucket += object.event.amount
-        
-      end
-
-      this_day = WeekToDate::GetWeek.week(date.to_s)
-      z = EventWeekly.where(event_id: event_array.map{ |event| event[:event_id] }, week_number: this_day[1], year: this_day[0], this_day[2].downcase => true)
-      z.each do |object|
         bucket += object.event.amount
       end
-        
 
       #if the day brings us negative, add to the reserve amount 
       if bucket < 0
@@ -53,23 +41,22 @@ class Account < ApplicationRecord
         bucket = 0
       end
     end
+
+    #calculating current balance
     recent_amounts = 0
     event_array.each do |event|
       if event.date > balance_update_time && event.date < Time.now
         recent_amounts += event.event.amount
-        
       end
     end
-
     expense_array.each do |expense|
       if expense.date > balance_update_time && expense.date < Time.now
         recent_amounts += expense.amount
-        
       end
     end
-    
-    current_balance = last_balance - recent_amounts
-    new_pocket_money = current_balance - reserve_amount - bucket
+
+    current_balance = last_balance + recent_amounts
+    new_pocket_money = current_balance - reserve_amount
 
     update(pocket_money: new_pocket_money)
 
@@ -164,7 +151,6 @@ class Account < ApplicationRecord
         @weeks_array.each do |week|
           day_of_week.each do |day|
             if week[day] == true
-              # week_hash = {date: WeekToDate::GetDate.get_date(week["year"].to_i, week["week_number"], day), id: week["event_id"]}
               week_hash = EventDate.new(date: WeekToDate::GetDate.get_date(week["year"].to_i, week["week_number"], day), event_id: week["event_id"])
               if week_hash[:date] > date1.to_date && week_hash[:date] < date2.to_date
                 event_array << week_hash
