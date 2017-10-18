@@ -16,7 +16,7 @@ class Account < ApplicationRecord
     reserve_amount = 0
 
     today = Time.now.to_date
-
+    
     #pull all expenses and events for the next "pocket_time" days (defalut 30)
     expense_array = self.find_expenses(balance_update_time, (today + pocket_time.days))
     event_array = self.find_events(balance_update_time, (today + pocket_time.days))
@@ -60,7 +60,6 @@ class Account < ApplicationRecord
 
     update(pocket_money: new_pocket_money)
 
-     
     return new_pocket_money
   end
 
