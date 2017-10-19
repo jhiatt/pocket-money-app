@@ -8,6 +8,9 @@ end
 #gem I made!!
 gem 'week_to_date'
 
+#for loading java script in live
+gem 'tether-rails'
+
 #because I'm paraniod about deleting stuff
 gem "paranoia", "~> 2.2"
 #https://github.com/rubysherpas/paranoia
