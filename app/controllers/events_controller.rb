@@ -26,7 +26,7 @@ class EventsController < ApplicationController
         # && params[:amount].to_i < 0
         amount = params[:amount].to_f * -1
       end
-        @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, impact: params[:impact], weekly: params[:weekly])
+        @event = Event.new(impact: params[:impact], repeat: params[:repeat], amount: amount, category: params[:category], description: params[:description], user_id: current_user.id, weekly: params[:weekly])
         @event.save 
       if @event.repeat && params[:weekly] == "false"
         occ_time = occurances(params[:date1])
