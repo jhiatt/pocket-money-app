@@ -5,7 +5,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.3.4'
+ruby '2.3.1'
 
 #gem I made!!
 gem 'week_to_date'
@@ -48,6 +48,7 @@ gem 'jbuilder', '~> 2.5'
 # gem 'bcrypt', '~> 3.1.7'
 gem 'jquery-rails'
 gem 'jquery-ui-rails'
+gem 'vuejs-rails'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
