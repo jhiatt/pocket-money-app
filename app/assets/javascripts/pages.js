@@ -83,7 +83,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
           that.tags = result;
           console.log(that.tags);
         });
-      });
+      }, {headers: 'Authorization': API_KEY});
     },
     computed: {
       sortedExpenses: function() {
