@@ -13,6 +13,9 @@ gem 'week_to_date'
 #for loading java script in live
 gem 'tether-rails'
 
+#cors
+gem 'rack-cors', require: 'rack/cors'
+
 #because I'm paraniod about deleting stuff
 gem "paranoia", "~> 2.2"
 #https://github.com/rubysherpas/paranoia

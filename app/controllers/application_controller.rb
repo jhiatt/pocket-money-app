@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
-  # before_action :restrict_access
+  before_action :restrict_access
 
   def update_pocket
     if current_user
@@ -13,5 +13,6 @@ class ApplicationController < ActionController::Base
       User.find_by(email: request.headers['X-User-Email'], api_key: api_key)
     end
   end
+
 end
 
