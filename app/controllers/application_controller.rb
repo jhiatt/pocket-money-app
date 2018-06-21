@@ -9,9 +9,11 @@ class ApplicationController < ActionController::Base
   end
 
   def restrict_access
+
     authenticate_or_request_with_http_token do |api_key, options|
-      User.find_by(email: request.headers['X-User-Email'], api_key: api_key)
+      ApiUser.find_by(email: request.headers['X-User-Email'], api_key: api_key)
     end
+            # binding.pry
   end
 
 end
